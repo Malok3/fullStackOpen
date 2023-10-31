@@ -1,7 +1,5 @@
 
 ```mermaid
-
-
 sequenceDiagram
 
     title Part0.4 New note diagram
@@ -41,4 +39,3 @@ sequenceDiagram
     deactivate server
 
     Note right of browser: The browser executes the callback function that renders the notes
-    ```
