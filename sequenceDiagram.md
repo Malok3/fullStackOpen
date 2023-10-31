@@ -5,7 +5,7 @@ sequenceDiagram
     participant browser
     participant server
 
-    Note right of browser: At this steap, the page has alreadey been rendered in the browser 
+    Note right of browser: At this step, the page has alreadey been rendered in the browser 
 
     Note right of browser: User adds text to input then submits form
 
