@@ -1,7 +1,8 @@
-```mermaid
 
 
 sequenceDiagram
+
+    title Part0.4 New note diagram
     participant browser
     participant server
 
@@ -30,7 +31,11 @@ sequenceDiagram
     server-->>browser: the JavaScript file
     deactivate server
 
-  
+    Note right of browser: The browser executes the Javascript code that fetches the JSON from server
+
+    browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+    activate server
+    server-->>browser: the JSON File
+    deactivate server
 
     Note right of browser: The browser executes the callback function that renders the notes
-```
