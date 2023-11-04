@@ -13,14 +13,12 @@ const App = () => {
     'The only way to go fast, is to go well.'
   ]
    
+  //States
+    const [selected, setSelected] = useState(0)
+    // Store the votes of each anecdote in an array
+    const [votes, setVote] = useState(new Array(anecdotes.length).fill(0));
   
-  const [selected, setSelected] = useState(0)
-  const [vote, setVote] = useState(0)
   
-  //creates an array of 8 filled with 0
-  const points = Array(8).fill(0)
-  const copy = { ...points }
-
   function generateRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -37,9 +35,16 @@ const App = () => {
   }
 
   const addVote = () => {
-    setVote(vote+1)
-    copy[selected] += 1
-    console.log(copy)
+    const copy = [...votes];
+    copy[selected] += 1;
+    setVote(copy);
+    mostVotedAnnecdotes();
+  }
+
+  function mostVotedAnnecdotes (){
+    if (i=0, i<votes.length,i++){
+      
+    }
   }
 
   //Components
@@ -51,10 +56,13 @@ const App = () => {
 
   return (
     <div>
+      <h2>Annecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
-      <p>This anecdote has {vote} votes</p>
+      <p>This anecdote has {votes[selected]} votes</p>
       <Button text={'Vote'} action={addVote} />
       <Button text={'Next anecdote'} action={getRandomAnecdote} />
+      <h2>Annecdote with most votes</h2>
+      <p>{anecdotes[selected]}</p>
     </div>
   )
 }
