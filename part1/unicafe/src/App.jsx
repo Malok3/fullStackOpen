@@ -31,7 +31,6 @@ function App() {
   const Title = ({text}) => <h2>{text}</h2>
 
   const Button = (props) => {
-    console.log(props)
     return (
       <button onClick={props.action}>{props.text}</button>
     )
