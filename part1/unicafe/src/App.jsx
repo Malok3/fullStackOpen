@@ -3,14 +3,14 @@ import { useState } from 'react'
 
 function App() {
 
+  //States
   const [good, setGood]=useState(0)
   const [neutral, setNeutral]=useState(0)
   const [bad, setBad]=useState(0)
   const [total, setTotal]=useState(0)
   const [averageSum, setAverageSum]=useState(0)
   
-  const Title = ({text}) => <h2>{text}</h2>
-
+  //updating states
   const increaseGood = () => {
     setGood(good + 1)
     setTotal(total + 1)
@@ -28,6 +28,8 @@ function App() {
 
 
   //Components
+  const Title = ({text}) => <h2>{text}</h2>
+
   const Button = (props) => {
     console.log(props)
     return (
@@ -66,6 +68,8 @@ function App() {
     )
   }
 
+  //Rendering
+  
   return (
     <>
       <Title text='Give feedback'/>
