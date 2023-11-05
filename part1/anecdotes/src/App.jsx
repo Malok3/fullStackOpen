@@ -17,6 +17,10 @@ const App = () => {
     const [selected, setSelected] = useState(0)
     // Store the votes of each anecdote in an array
     const [votes, setVote] = useState(new Array(anecdotes.length).fill(0));
+    // Store votes of most voted annecdote 
+    const [maxVotes, setMaxVotes] = useState(0)
+    // Store the mostVoted anecdote
+    const [bestAnecdote, setBestAnecdote] = useState(0)
   
   
   function generateRandomInteger(min, max) {
@@ -38,15 +42,22 @@ const App = () => {
     const copy = [...votes];
     copy[selected] += 1;
     setVote(copy);
-    mostVotedAnnecdotes();
+    mostVotedAnecdotes(copy)
   }
 
-  function mostVotedAnnecdotes (){
-    if (i=0, i<votes.length,i++){
-      
+  function mostVotedAnecdotes (arr){
+    let max = arr[0]
+    let index = 0
+    for (let i=0; i<arr.length;i++){
+      if(arr[i]>max){
+        max=arr[i]
+        index = i
+      }
     }
+    setBestAnecdote(index)
+    setMaxVotes(max)
   }
-
+  
   //Components
   const Button = (props) => {
     return (
@@ -54,15 +65,31 @@ const App = () => {
     )
   }
 
+
+  const BestAnecdote = () => {
+    if(maxVotes===0){
+      return(
+        <p>Please vote for you favorite anecdote</p>
+      )
+    }
+    else {
+      return(
+        <div>
+          <h2>With {maxVotes} votes, this annecdote is the favorite:</h2>
+          <p>{anecdotes[bestAnecdote]}</p>
+        </div>
+      )
+    }  
+  }
+
   return (
     <div>
-      <h2>Annecdote of the day</h2>
+      <h2>Annecdote of the day:</h2>
       <p>{anecdotes[selected]}</p>
       <p>This anecdote has {votes[selected]} votes</p>
       <Button text={'Vote'} action={addVote} />
       <Button text={'Next anecdote'} action={getRandomAnecdote} />
-      <h2>Annecdote with most votes</h2>
-      <p>{anecdotes[selected]}</p>
+      <BestAnecdote />
     </div>
   )
 }
