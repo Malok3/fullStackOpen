@@ -1,50 +1,7 @@
-const Course = (props) =>
-  <>
-    <Header text={'Web development curriculum'} />
-    <Course courses={props.courses} />
-    {/*<Content parts={props.parts} />
-    <Total parts={props.parts} />*/}
-  </>
+import Course from './components/course.jsx'
 
 const Header = ({ text }) => <h1>{text}</h1>
-
-const Course = ({courses}) => {
-
-  return(
-   <Header />
-   <Content />
-   <Total />
-  )
-}
-
-
-
-
-const Content = ({parts}) => 
-  <>
-    {parts.map(part=> 
-      <Part key={part.id} name={part.name} exercises={part.exercises}/>
-    )}
-  </>
-
-const Part = (props) => 
-  <p>
-    {props.name} {props.exercises} 
-  </p>
-
-
-const Total = ({parts}) =>{
-
-  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0);
  
-  return(
-    <>
-     <b>Total of {totalExercises} exercises.</b>
-    </>
-  )
-
-}
-  
 const App = () => {
   const courses = [
     {
@@ -91,7 +48,12 @@ const App = () => {
     }
   ]
 
-  return <Course course={course} parts={parts} />
+  return (
+    <>
+    <Header text={'Web development curriculum'} />
+    <Course courses={courses} />
+    </>
+  )
 }
 
 export default App
