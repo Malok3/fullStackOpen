@@ -27,7 +27,6 @@ const App = () => {
   }
   const handleSearchChange = (event) => {
     setNewSearch(event.target.value);
-    
   };
 
   // filter
