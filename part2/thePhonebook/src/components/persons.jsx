@@ -1,3 +1,4 @@
+import Person from './person'
 
 const Persons = (props) => {
     const personsToShow = props.personsToShow
@@ -5,19 +6,10 @@ const Persons = (props) => {
       <>
       <ul>
         {personsToShow.map(person=>
-            <Person key={person.id} name={person.name} number={person.number} />
+            <Person key={person.id} name={person.name} number={person.number} deletePerson={props.deletePerson} id={person.id}/>
         )}
       </ul> 
     </>
-    )
-  }
-
-  
-const Person = (props) => {
-    return(
-      <>
-        <li>{props.name} {props.number}</li>
-      </>
     )
   }
 
