@@ -54,7 +54,18 @@ const App = () => {
     }
     //if filter method returns something the name has already been entered
     if((persons.filter((person) => person.name === personObject.name).length>0)){
-      alert(`${personObject.name} is already added to phonebook`)
+      console.log('ok')
+      if (personObject.number != person.number){
+        console.log('ok2')
+        if (window.confirm(`Do you really want to delete ${nameToDelete}?`)) {
+          console.log('ok3')
+          /*const request = axios.delete(`${baseUrl}/${id}`)
+          return request.then(response => response.data)*/
+        }
+      }else{
+        console.log('ok4')
+        alert(`${personObject.name} is already added to phonebook`)
+      }
     }else{
       setPersons(persons.concat(personObject))
     }
@@ -70,13 +81,19 @@ const App = () => {
 
   const deletePerson = (id) => {
     const nameToDelete = persons[id-1].name
-    //filters the persons contactbook by id and returns a new array without the person
-    const newpersons = persons.filter(person => person.id !== id)
+    
     personService
     .removePerson(id,nameToDelete)
     .then(response => {
-      // sets a new state and causes the app to rerender the component
-      setPersons(newpersons)
+      if(response==='cancelled'){
+        console.log('deletion canceled')
+      }else{
+        console.log(`${nameToDelete}`,'has been deleted')
+        //filters the persons contactbook by id and returns a new array without the person
+        const newpersons = persons.filter(person => person.id !== id)
+        // sets a new state and causes the app to rerender the component
+        setPersons(newpersons)
+      }
     })
     .catch((err)=>{
       alert("ERROR",err)
