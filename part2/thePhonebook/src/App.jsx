@@ -3,21 +3,21 @@ import axios from 'axios'
 import Filter  from './components/filter'
 import PersonForm  from './components/personForm'
 import Persons from './components/persons'
+import Notification from './components/notification'
 import personService from './services/persons'
+
+import './index.css'
+
 
 const App = () => {
 
   // States
-  // const [persons, setPersons] = useState([
-  //   { name: 'Arto Hellas', number:123456, id:1 },
-  //   { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-  //   { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-  //   { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  // ]) 
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [newSearch, setNewSearch] = useState('')
+  const [notificationMessage, setNotification] = useState(null)
+  const [success, setSuccess] = useState(true)
 
   useEffect(() => {
     axios
@@ -42,63 +42,108 @@ const App = () => {
   // filter
   const personsToShow = persons.filter(person=> person.name.toLowerCase().includes(newSearch.toLowerCase()))
 
-
   //add new person
-  
   const addName = (event) => {
-    event.preventDefault()
-    const personObject={
-      name:newName,
-      number:newNumber,
-      id:persons.length+1,
-    }
-    //if filter method returns something the name has already been entered
-    if((persons.filter((person) => person.name === personObject.name).length>0)){
-      console.log('ok')
-      if (personObject.number != person.number){
-        console.log('ok2')
-        if (window.confirm(`Do you really want to delete ${nameToDelete}?`)) {
-          console.log('ok3')
-          /*const request = axios.delete(`${baseUrl}/${id}`)
-          return request.then(response => response.data)*/
-        }
-      }else{
-        console.log('ok4')
-        alert(`${personObject.name} is already added to phonebook`)
-      }
-    }else{
-      setPersons(persons.concat(personObject))
-    }
+    event.preventDefault();
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    };
 
-    personService
-    .create(personObject)
-      .then(returnedPerson => {
-      setPersons(persons.concat(returnedPerson))
-      setNewName('')
-      setNewNumber('')
-    })
-  }
+    const duplicatePerson = persons.find(
+      (person) => person.name.toLowerCase() === newName.toLowerCase()
+    );
+
+    if (duplicatePerson) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook. Replace the old number with a new one?`
+        )
+      ) {
+        const updatedPerson = { ...duplicatePerson, number: newNumber };
+
+        personService
+          .update(updatedPerson.id, updatedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== returnedPerson.id ? person : returnedPerson
+              )
+            );
+            setNewName('');
+            setNewNumber('');
+            setNotification(`${returnedPerson.name} number has been updated.`);        
+              setTimeout(() => {          
+                  setNotification(null)        
+                },5000
+              )
+          })
+          .catch((error) => {
+            personService.getAll()
+            .then(response => {
+              setPersons(response.data);
+            })
+            setSuccess(false)
+            setNotification(`${updatedPerson.name} has already been removed from server.`);        
+              setTimeout(() => {          
+                  setNotification(null)        
+                },5000
+            )
+          });
+      }
+    } else {
+      personService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+          setNotification(`${returnedPerson.name} was added to the phone book.`);        
+            setTimeout(() => {          
+                setNotification(null)        
+              },5000
+            )
+        })
+        .catch((error) => {
+          console.error('Error creating contact:', error);
+        });
+    }
+  };
+
 
   const deletePerson = (id) => {
-    const nameToDelete = persons[id-1].name
-    
-    personService
-    .removePerson(id,nameToDelete)
-    .then(response => {
-      if(response==='cancelled'){
-        console.log('deletion canceled')
-      }else{
-        console.log(`${nameToDelete}`,'has been deleted')
-        //filters the persons contactbook by id and returns a new array without the person
-        const newpersons = persons.filter(person => person.id !== id)
-        // sets a new state and causes the app to rerender the component
-        setPersons(newpersons)
-      }
-    })
-    .catch((err)=>{
-      alert("ERROR",err)
-    })
-  }
+    console.log(id)
+    const personToDelete = persons.find((person) => person.id === id);
+    if (window.confirm(`Do you really want to delete ${personToDelete.name}?`)) {
+      personService
+        .removePerson(id)
+        .then(() => {
+          setSuccess(true)
+          setNotification(`${personToDelete.name} has been deleted from phone book.`);        
+          setTimeout(() => {          
+              setNotification(null)        
+            },5000
+          )
+          console.log(`${personToDelete.name} has been deleted`);
+          // Filter out the deleted person from the state
+          const updatedPersons = persons.filter((person) => person.id !== id);
+          setPersons(updatedPersons);
+         
+        })
+        .catch((error) => {
+          const updatedPersons = persons.filter((person) => person.id !== id);
+          setPersons(updatedPersons);
+          setSuccess(false)
+          setNotification(`${personToDelete.name} has already been removed from server.`);        
+            setTimeout(() => {          
+                setNotification(null)        
+              },5000
+            )
+        });
+    } else {
+      console.log('Deletion canceled');
+    }
+  };
 
 
   return (
@@ -106,7 +151,7 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <Filter newSearch={newSearch} onChangeFilter={handleSearchChange}/>
-
+      <Notification message={notificationMessage} success={success}/>
       <h2>Add a new</h2>
       <PersonForm 
         newName={newName} onChangeName={handleNameChange} 
@@ -122,5 +167,3 @@ const App = () => {
 }
 
 export default App
-
- 

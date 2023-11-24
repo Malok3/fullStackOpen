@@ -6,35 +6,31 @@ const getAll = () => {
   const request = axios.get(baseUrl)
   return request.then(response => response.data)
 }
-/*
-const getAll = () => {
-  const request = axios.get(baseUrl)
-  const nonExisting = {
-    id: 10000,
-    content: 'This note is not saved to server',
-    important: true,
-  }
-  return request.then(response => response.data.concat(nonExisting))
-}
-*/
 
 const create = newObject => {
   const request = axios.post(baseUrl, newObject)
   return request.then(response => response.data)
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+const update = (id, updatedPerson) => {
+  const request = axios
+    .put(`${baseUrl}/${id}`, updatedPerson)
+    .then(response => response.data)
+    .catch(error => {
+      console.log('fail to update person')
+    })
   return request.then(response => response.data)
 }
 
-const removePerson = (id, nameToDelete) =>{
-  if (window.confirm(`Do you really want to delete ${nameToDelete}?`)) {
-    const request = axios.delete(`${baseUrl}/${id}`)
+
+const removePerson = (id) =>{
+    const request = axios
+    .delete(`${baseUrl}/${id}`)
+    .then(response => response.data)
+    .catch(error => {
+      console.log('fail to remove person')
+    })
     return request.then(response => response.data)
-  }else {
-    return Promise.resolve('cancelled');
-  }
 }
 
 export default { 
