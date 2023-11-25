@@ -13,13 +13,15 @@ const create = newObject => {
 }
 
 const update = (id, updatedPerson) => {
-  const request = axios
+  return axios
     .put(`${baseUrl}/${id}`, updatedPerson)
-    .then(response => response.data)
-    .catch(error => {
-      console.log('fail to update person')
+    .then(response => {
+      return response.data; 
     })
-  return request.then(response => response.data)
+    .catch(error => {
+      console.log('Failed to update person:', error);
+      throw error; // Re-throw the error to propagate it further
+    });
 }
 
 

@@ -61,7 +61,6 @@ const App = () => {
         )
       ) {
         const updatedPerson = { ...duplicatePerson, number: newNumber };
-
         personService
           .update(updatedPerson.id, updatedPerson)
           .then((returnedPerson) => {
@@ -79,16 +78,16 @@ const App = () => {
               )
           })
           .catch((error) => {
-            personService.getAll()
-            .then(response => {
-              setPersons(response.data);
-            })
-            setSuccess(false)
-            setNotification(`${updatedPerson.name} has already been removed from server.`);        
-              setTimeout(() => {          
-                  setNotification(null)        
-                },5000
-            )
+              setPersons(
+                persons.filter(person => person.id !== updatedPerson.id)
+              );
+              setSuccess(false);
+              setNotification(`${updatedPerson.name} has already been removed from server.`);
+              setTimeout(() => {
+                setNotification(null);
+              }, 5000);
+              
+            
           });
       }
     } else {
