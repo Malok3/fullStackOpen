@@ -1,8 +1,24 @@
 const express = require('express')
-var morgan = require('morgan')
+const morgan = require('morgan')
+
 const app = express()
 
-app.use(express.json())
+// Middleware to parse incoming request body as JSON
+app.use(express.json());
+
+// Create a custom token named postData
+morgan.token('postData', (req) => {
+    if (req.method === 'POST') {
+        return JSON.stringify(req.body);
+    }
+    return '';
+});
+
+//Configure morgan so that it also shows the data sent in HTTP POST requests
+const custom = ':method :url :status :res[content-length] - :response-time ms :postData';
+app.use(morgan(custom));
+
+
 
 let persons = [
     { 
@@ -26,9 +42,12 @@ let persons = [
       "number": "39-23-6423122"
     }
 ]
+
+
+
+//Routes: defined to handle different types of HTTP requests
 app.get('/info', (request, response) => {
     const date = new Date()
-    console.log(date)
     const phoneBookLength = persons.length;
     response.send(`
         <p>Phonebook has info for ${phoneBookLength} people</p>
@@ -64,11 +83,9 @@ app.delete('/api/persons/:id', (request, response) => {
 
 app.post('/api/persons', (request, response) => {
     const person = request.body
-
     const duplicatedPerson = (t) => {
         return persons.find(p => p.name === t.name)
     }
-    console.log(duplicatedPerson(person))
     if(person.name  === '' || person.number === ''){
         response.status(400).json({ 
             error: 'Name or number missing' 
@@ -77,7 +94,7 @@ app.post('/api/persons', (request, response) => {
     else if (duplicatedPerson(person)){
         response.status(400).json({ 
             error: 'Name must be unique' 
-          })
+        })
     }
     else {
         function getRandomInt(max) {
@@ -95,7 +112,7 @@ app.post('/api/persons', (request, response) => {
     
 })
 
-
+// Starting the server
 const PORT = 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
