@@ -1,15 +1,15 @@
-# fly.toml app configuration file generated for backend-malak on 2023-12-04T18:27:50+02:00
+# fly.toml app configuration file generated for backend-phonebook-malak on 2023-12-06T11:52:06+02:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = "backend-malak"
+app = "backend-phonebook-malak"
 primary_region = "ams"
 
 [build]
 
 [env]
-  PORT = "3000" 
+  PORT = "3000"
 
 [http_service]
   internal_port = 3000
