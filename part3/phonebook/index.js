@@ -22,6 +22,46 @@ const custom = ':method :url :status :res[content-length] - :response-time ms :p
 app.use(morgan(custom));
 
 
+//mongose config: connecting backend to databas
+const mongoose = require('mongoose')
+
+const password = process.argv[2]
+
+const personName = process.argv[3]
+const personNumber = process.argv[4]
+
+// DO NOT SAVE YOUR PASSWORD TO GITHUB!!
+const url =
+  `mongodb+srv://fullstack:${password}@cluster0.o1opl.mongodb.net/?retryWrites=true&w=majority`
+
+mongoose.set('strictQuery',false)
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    number: String,
+    id: String
+  })
+  
+
+const Person = mongoose.model('Person', personSchema)
+
+
+const person = new Person({
+    name: personName,
+    number: personNumber
+ })
+ 
+// fetch every object in the collection
+if (process.argv.length===3) {
+    console.log('Phonebook:')
+    Person.find({}).then(result => {
+        result.forEach(person => {
+          console.log(person.name, person.number)
+        })
+       mongoose.connection.close()
+    })
+}
 
 let persons = [
     { 
@@ -63,7 +103,10 @@ app.get('/', (request, response) => {
 })
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    //response.json(persons)
+    Persons.find({}).then(persons => {
+        response.json(persons)
+      })
 })
   
 app.get('/api/persons/:id', (request, response) => {
