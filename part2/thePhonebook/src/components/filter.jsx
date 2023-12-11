@@ -2,7 +2,6 @@
 const Filter = (props) => {
     const newSearch = props.newSearch
     const onChangeFilter = props.onChangeFilter
-    const persons = props.persons
     
   
     return (
