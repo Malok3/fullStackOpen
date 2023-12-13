@@ -3,4 +3,4 @@
 
 Like most companies, the student restaurant of the University of Helsinki Unicafe collects feedback from its customers. Your task is to implement a web application for collecting customer feedback.
 
-![unicafe-preview](16e.png)
+![unicafe-preview](./images/16e.png)
