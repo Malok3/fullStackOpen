@@ -3,4 +3,4 @@
 Annecdotes of the day shown randomly with a voting system. 
 
 
-![annecdotes-preview](20a.png)
+![annecdotes-preview](./images/20a.png)

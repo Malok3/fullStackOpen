@@ -2,4 +2,4 @@
 
 Course information and additionning the number of exercices.
 
-![Alt text](<Screenshot 2023-12-13 at 18.03.02.png>)
+![Alt text](<./images/Screenshot 2023-12-13 at 18.03.02.png>)
