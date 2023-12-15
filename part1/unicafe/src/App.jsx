@@ -53,7 +53,7 @@ function App() {
           <StatisticLine text={'Bad feedbacks'} value={bad} />
           <StatisticLine text={'Total number of feedbacks'} value={total} />
           <StatisticLine text={'Average feedback'} value={averageSum/total} />
-          <StatisticLine text={'Percentage of positive feedback'} value={good/total + '%'} />
+          <StatisticLine text={'Percentage of positive feedback'} value={(good/total)*100 + '%'} />
         </tbody>
       </table>
     )
