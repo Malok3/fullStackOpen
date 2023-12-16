@@ -1,15 +1,19 @@
 GET http://localhost:3003/api/blogs
 
 ###
-GET http://localhost:3003/
+DELETE http://localhost:3003/api/blogs/657df786793368adaf9d9f55
 
 ###
-DELETE http://localhost:3003/api/persons/4
+GET http://localhost:3003/api/blogs/657df7d0793368adaf9d9f57
+
+
 ###
-POST http://localhost:3003/api/persons/
+POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "number": "123456789"
+  "title":"React patterns",
+  "author":"Michael Chan",
+  "url":"https://reactpatterns.com/",
+  "likes":7
 }
