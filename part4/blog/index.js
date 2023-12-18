@@ -48,5 +48,5 @@ app.delete('/api/blogs/:id', (request, response, next) => {
 const PORT = process.env.PORT
 console.log('port',PORT)
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
