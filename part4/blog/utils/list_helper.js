@@ -35,19 +35,22 @@ const mostBlogs = (blogs) => {
     return blog.author
   })
 
+  // Reduce will loop through AutorsArray, Acc is initially an empty object, author is an item of the array
+  // If the property (author) already exists in the object -> increments its value
+  // Else -> creates a new property then increments its value of one
 
-  const counts = authorsArray.reduce((acc, currentValue) => {
-    if (acc[currentValue]) {
-      acc[currentValue]++
+  const counts = authorsArray.reduce((acc, author) => {
+    if (acc[author]) {
+      acc[author]++
     } else {
-      acc[currentValue] = 1
+      acc[author] = 1
     }
     return acc
+
   }, {})
 
   // Counts: { 'Michael Chan': 1, 'Edsger W. Dijkstra': 2, 'Robert C. Martin': 3 }
 
-  // Recherche de la valeur la plus fréquente et de son nombre d'occurrences
   let mostFrequentAuthor
   let highestCount = 0
 
@@ -64,7 +67,45 @@ const mostBlogs = (blogs) => {
   }
 }
 
+const mostLikes = (blogs) => {
+  const authorsAndLikes = blogs.reduce((acc, blog) => {
+    //creates 2 variables, then adds values extracted from blog object
+    const { author,likes } = blog
+    // If author exists in acc, add like to its total else initialize its number of likes
+    if (acc[author]) {
+      acc[author].totalLikes += likes
+    } else {
+      acc[author] = {
+        totalLikes: likes
+      }
+    }
+    console.log(acc)
+    return acc
+  }, {})
+
+  // authorsAndLikes {
+  //   'Michael Chan': { totalLikes: 7 },
+  //   'Edsger W. Dijkstra': { totalLikes: 17 },
+  //   'Robert C. Martin': { totalLikes: 12 }
+  // }
+
+  let mostLikedAuthor = ''
+  let mostLikes = 0
+
+  for (const author in authorsAndLikes) {
+    if (authorsAndLikes[author].totalLikes > mostLikes) {
+      mostLikes = authorsAndLikes[author].totalLikes
+      mostLikedAuthor = author
+    }
+  }
+
+  return {
+    'author':mostLikedAuthor,
+    'likes':mostLikes
+  }
+}
+
 module.exports = {
-  dummy, totalLikes, favoriteBlog, mostBlogs
+  dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes
 }
 

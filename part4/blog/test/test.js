@@ -102,7 +102,7 @@ describe ('Author with most blogs', ()=> {
 
 const authorWithMostLikes = {
   'author': "Edsger W. Dijkstra",
-  'blogs': 17
+  'likes': 17
 }
 
 describe ('Author with the largest amount of lifes', ()=>{
