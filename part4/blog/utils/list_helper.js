@@ -11,7 +11,7 @@ const totalLikes = (blogs) => {
     return blogs[0].likes
   }
   if (blogs.length>1){
-    return blogs.reduce((total, blog) => total + blog.likes, 0);
+    return blogs.reduce((total, blog) => total + blog.likes, 0)
   }
 }
 
@@ -27,28 +27,41 @@ const favoriteBlog = (blogs) => {
   return favBlog
 }
 
+
+
+
 const mostBlogs = (blogs) => {
-  const authors = blogs.map((blog) => {
-    return blog.author;
-  });
+  const authorsArray = blogs.map((blog) => {
+    return blog.author
+  })
 
 
-  let mostBlogsAuthor = authors[0]
-  let blogAmount = 0
+  const counts = authorsArray.reduce((acc, currentValue) => {
+    if (acc[currentValue]) {
+      acc[currentValue]++
+    } else {
+      acc[currentValue] = 1
+    }
+    return acc
+  }, {})
 
-  for (i=1; i<authors.length;i++){
-    if (authors[i]===authors[0]){
-      mostBlogsAuthor = authors[i]
-      blogAmount ++
+  // Counts: { 'Michael Chan': 1, 'Edsger W. Dijkstra': 2, 'Robert C. Martin': 3 }
+
+  // Recherche de la valeur la plus fréquente et de son nombre d'occurrences
+  let mostFrequentAuthor
+  let highestCount = 0
+
+  for (const key in counts) {
+    if (counts[key] > highestCount) {
+      highestCount = counts[key]
+      mostFrequentAuthor = key
     }
   }
-  
-  return {
-    author: mostBlogsAuthor,
-    blogs: blogAmount
-  }
-  
 
+  return {
+    'author':mostFrequentAuthor,
+    'blogs':highestCount
+  }
 }
 
 module.exports = {
