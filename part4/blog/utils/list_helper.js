@@ -71,7 +71,7 @@ const mostLikes = (blogs) => {
   const authorsAndLikes = blogs.reduce((acc, blog) => {
     //creates 2 variables, then adds values extracted from blog object
     const { author,likes } = blog
-    // If author exists in acc, add like to its total else initialize its number of likes
+    // If author exists in acc, add likes to its total else initialize its number of likes
     if (acc[author]) {
       acc[author].totalLikes += likes
     } else {
