@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Content from './components/content';
-import Search from './components/search';
+import CountryInfo from './components/CountryInfo';
+import Filter from './components/filter';
 
 function App() {
   const [newSearch, setNewSearch] = useState('');
   const [countries, setCountries] = useState([]);
   const [allCountries, setAllCountries] = useState([]);
 
-
-  
 
   useEffect(() => {
     axios
@@ -35,8 +33,8 @@ function App() {
 
   return (
     <>
-      <Search newSearch={newSearch} onChangeFilter={handleSearchChange} />
-      <Content countries={countries} setCountries={setCountries} />
+      <Filter newSearch={newSearch} onChangeFilter={handleSearchChange} />
+      <CountryInfo countries={countries} setCountries={setCountries} />
     </>
   );
 }

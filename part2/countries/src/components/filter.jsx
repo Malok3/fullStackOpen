@@ -1,4 +1,4 @@
-const Search = (props) => {
+const Filter = (props) => {
     const search = props.newSearch
     const handleSearchChange = props.onChangeFilter
 
@@ -9,4 +9,4 @@ const Search = (props) => {
     </>
 }
 
-export default Search
+export default Filter

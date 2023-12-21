@@ -1,7 +1,7 @@
 import React from 'react'
 import Country from './Country'
 
-const Content = ({countries, setCountries}) => {
+const CountryInfo = ({countries, setCountries}) => {
   if (countries.length > 10) {
       return (
         <p>
@@ -24,4 +24,4 @@ const Content = ({countries, setCountries}) => {
   }
 }
 
-export default Content
+export default CountryInfo

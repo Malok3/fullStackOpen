@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import React from 'react'
 
 const Country = ({country}) => {
+  console.log(country)
+  //Object.keys(country.languages) is an array 
   return (
     <div>
       <h1>{country.name.common}</h1>
