@@ -81,7 +81,7 @@ describe('total likes', () => {
   })
 })
 
-describe ('favorite blog', ()=> {
+describe ('favorite blog', () => {
   test ('is the correct one', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual(blogs[2])
@@ -89,23 +89,23 @@ describe ('favorite blog', ()=> {
 })
 
 const authorWithMostBlogs = {
-  'author': "Robert C. Martin",
+  'author': 'Robert C. Martin',
   'blogs': 3
 }
 
-describe ('Author with most blogs', ()=> {
+describe ('Author with most blogs', () => {
   test ('is the correct one', () => {
-      const result = listHelper.mostBlogs(blogs)
-      expect(result).toEqual(authorWithMostBlogs)
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual(authorWithMostBlogs)
   })
 })
 
 const authorWithMostLikes = {
-  'author': "Edsger W. Dijkstra",
+  'author': 'Edsger W. Dijkstra',
   'likes': 17
 }
 
-describe ('Author with the largest amount of lifes', ()=>{
+describe ('Author with the largest amount of lifes', () => {
   test ('is the correct one', () => {
     const result = listHelper.mostLikes(blogs)
     expect(result).toEqual(authorWithMostLikes)

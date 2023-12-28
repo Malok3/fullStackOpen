@@ -18,7 +18,7 @@ const totalLikes = (blogs) => {
 const favoriteBlog = (blogs) => {
   let biggest = blogs[0].likes
   let favBlog = blogs[0]
-  for (i=1;i<blogs.length;i++){
+  for (let i=1;i<blogs.length;i++){
     if(blogs[i].likes>biggest){
       biggest = blogs[i].likes
       favBlog = blogs[i]
@@ -79,7 +79,6 @@ const mostLikes = (blogs) => {
         totalLikes: likes
       }
     }
-    console.log(acc)
     return acc
   }, {})
 
