@@ -1,11 +1,11 @@
 /* The route handlers have also been moved into a dedicated module.
 The event handlers of routes are commonly referred to as controllers,
 and for this reason we have created a new controllers directory.
-All of the routes related to notes are now in the notes.js module under the controllers directory.
+All of the routes related to blogs are now in the blogs.js module under the controllers directory.
 */
 
 const blogsRouter = require('express').Router()
-const Blog = require('../models/blogs')
+const Blog = require('../models/blog')
 
 blogsRouter.get('/', (request, response) => {
   Blog.find({}).then(blogs => {
@@ -28,12 +28,16 @@ blogsRouter.get('/:id', (request, response, next) => {
 blogsRouter.post('/', (request, response, next) => {
   const body = request.body
 
-  const blog = new Blog({
-    content: body.content
-  })
-  if (!body.hasOwnProperty('likes')) {
+  if (!body.likes) {
     body.likes = 0
   }
+
+  const blog = new Blog({
+    author: body.author,
+    title: body.title,
+    likes: body.likes,
+    url: body.url
+  })
 
   blog.save()
     .then(savedBlog => {
@@ -54,15 +58,12 @@ blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
   const note = {
-    content: body.content,
-    important: body.important,
+    author: body.author,
+    title: body.title,
+    likes: body.likes,
+    url: body.url
   }
 
-  Blog.findByIdAndUpdate(request.params.id, note, { new: true })
-    .then(updatedBlog => {
-      response.json(updatedBlog)
-    })
-    .catch(error => next(error))
 })
 
 module.exports = blogsRouter

@@ -32,7 +32,7 @@ test('a blognote can be added', async () => {
   await api
     .post('/api/blogs')
     .send(newBlog)
-    .expect(201)
+    .expect(200)
     .expect('Content-Type', /application\/json/)
 
   const response = await api.get('/api/blogs')
@@ -55,12 +55,11 @@ test('is the likes property is missing from the request', async () => {
   await api
     .post('/api/blogs')
     .send(blogWithoutLikes)
-    .expect(201)
+    .expect(200)
 
   const response = await api.get('/api/blogs')
-  const blogs = response.body
-
- console.log('ui',blogs)
+  const lastBlog = response.body[response.body.length-1]
+  expect(lastBlog).toBeDefined()
 })
 
 afterAll(async () => {

@@ -1,55 +1,31 @@
-
+const config = require('./utils/config')
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const Blog = require('./models/blog')
+const blogsRouter = require('./controllers/blog')
+const middleware = require('./utils/middleware')
+const logger = require('./utils/logger')
+const mongoose = require('mongoose')
+mongoose.set('strictQuery', false)
 
+logger.info('connecting to', config.MONGODB_URI)
+
+mongoose.connect(config.MONGODB_URI)
+  .then(() => {
+    logger.info('connected to MongoDB')
+  })
+  .catch((error) => {
+    logger.error('error connecting to MongoDB:', error.message)
+  })
 
 app.use(cors())
+app.use(express.static('build'))
 app.use(express.json())
+app.use(middleware.requestLogger)
 
-app.get('/api/blogs', (request, response) => {
-  Blog
-    .find({})
-    .then(blogs => {
-      response.json(blogs)
-    })
-})
+app.use('/api/blogs', blogsRouter)
 
-app.get('/api/blogs/:id', (request, response, next) => {
-  Blog.findById(request.params.id)
-    .then(blog => {
-      if (blog) {
-        response.json(blog)
-      } else {
-        response.status(404).end()
-      }
-    })
-    .catch(error => next(error))
-})
-
-
-
-app.post('/api/blogs', (request, response) => {
-  const blog = new Blog(request.body)
-
-  blog
-    .save()
-    .then(result => {
-      response.status(201).json(result)
-    })
-})
-
-app.delete('/api/blogs/:id', (request, response, next) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then(() => {response.status(204).end()})
-    .catch(error => next(error))
-})
-
-const PORT = process.env.PORT
-console.log('port',PORT)
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
+app.use(middleware.unknownEndpoint)
+app.use(middleware.errorHandler)
 
 module.exports = app
