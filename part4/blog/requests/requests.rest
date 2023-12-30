@@ -1,10 +1,10 @@
 GET http://localhost:3003/api/blogs
 
 ###
-DELETE http://localhost:3003/api/blogs/657df786793368adaf9d9f55
+DELETE http://localhost:3003/api/blogs/658eeae51ebe71a0d7ade7d4
 
 ###
-GET http://localhost:3003/api/blogs/657df7d0793368adaf9d9f57
+GET http://localhost:3003/api/blogs/658eeae51ebe71a0d7ade7d4
 
 
 ###
@@ -12,8 +12,19 @@ POST http://localhost:3003/api/blogs/
 Content-Type: application/json
 
 {
-  "title":"React patterns",
-  "author":"Michael Chan",
+  "title":"test",
+  "author":"test",
   "url":"https://reactpatterns.com/",
   "likes":7
+}
+
+###
+PUT  http://localhost:3003/api/blogs/658eddfef0abaa5b2068b849
+Content-Type: application/json
+
+{
+  "title":"changed title",
+  "author":"updated test",
+  "url":"https://reactpatterns.com/lol",
+  "likes":999
 }

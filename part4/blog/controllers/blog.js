@@ -31,6 +31,9 @@ blogsRouter.post('/', (request, response, next) => {
   if (!body.likes) {
     body.likes = 0
   }
+  if (!body.author || !body.url) {
+    response.status(400).end()
+  }
 
   const blog = new Blog({
     author: body.author,
@@ -54,16 +57,22 @@ blogsRouter.delete('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+
 blogsRouter.put('/:id', (request, response, next) => {
   const body = request.body
 
-  const note = {
+  const blog = {
     author: body.author,
     title: body.title,
     likes: body.likes,
     url: body.url
   }
 
+  Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
+    .then(updatedNote => {
+      response.json(updatedNote)
+    })
+    .catch(error => next(error))
 })
 
 module.exports = blogsRouter
