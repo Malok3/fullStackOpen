@@ -3,28 +3,16 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const helper = require('./test_helper')
 
-const initialBlogs = [
-  {
-    title: 'React patterns',
-    author: 'Michael Chan',
-    url: 'https://reactpatterns.com/',
-    likes: 7,
-  },
-  {
-    title:'Type wars',
-    author:'Robert C. Martin',
-    url:'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
-    likes:2
-  },
-]
+
 // Initialise the database: The database is cleared out at the beginning,
 // and after that, we save the two notes stored in the initialNotes array to the database
 beforeEach(async () => {
   await Blog.deleteMany({})
-  let blogObject = new Blog(initialBlogs[0])
+  let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
-  blogObject = new Blog(initialBlogs[1])
+  blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
 })
 
@@ -70,7 +58,7 @@ describe('When there is initially some blogs saves', () => {
       url: 'http://www.updatedurl.html',
       likes: 999,
     }
-    console.log('id', `${lastBlogAdded.id}`)
+
     await api
       .put(`/api/blogs/${lastBlogAdded.id}`)
       .send(blog)
@@ -86,7 +74,8 @@ describe('When there is initially some blogs saves', () => {
 
 describe('addition of a new blog', () => {
   test('a blognote can be added', async () => {
-    const initialBlogs = await api.get('/api/blogs')
+    //const initialBlogs = await api.get('/api/blogs')
+    const initialBlogs = helper.initialBlogs
     const newBlog = {
       title: 'new blog test',
       author: 'Johnny Knoxville',
@@ -104,7 +93,7 @@ describe('addition of a new blog', () => {
 
     const authors = response.body.map(r => r.author)
 
-    expect(response.body).toHaveLength(initialBlogs.body.length + 1)
+    expect(response.body).toHaveLength(initialBlogs.length + 1)
     expect(authors).toContain(
       'Johnny Knoxville'
     )
@@ -126,16 +115,17 @@ describe('addition of a new blog', () => {
     const response = await api.get('/api/blogs')
     const lastBlog = response.body[response.body.length-1]
     expect(lastBlog).toBeDefined()
+    expect(lastBlog.likes).toBe(0)
   })
 
   test('When adding a blog without author or url, backend responds with status 400', async () => {
-    const blogNoAuthor = {
-      title: 'new blog without author',
+    const blogNoUrl = {
+      title: 'new blog without url',
       author: 'Jean Carmet'
     }
     await api
       .post('/api/blogs')
-      .send(blogNoAuthor)
+      .send(blogNoUrl)
       .expect(400)
   })
 

@@ -32,7 +32,7 @@ blogsRouter.post('/', (request, response, next) => {
     body.likes = 0
   }
   if (!body.author || !body.url) {
-    response.status(400).end()
+    return response.status(400).end()
   }
 
   const blog = new Blog({
