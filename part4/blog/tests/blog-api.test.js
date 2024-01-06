@@ -74,7 +74,6 @@ describe('When there is initially some blogs saves', () => {
 
 describe('addition of a new blog', () => {
   test('a blognote can be added', async () => {
-    //const initialBlogs = await api.get('/api/blogs')
     const initialBlogs = helper.initialBlogs
     const newBlog = {
       title: 'new blog test',
@@ -155,8 +154,9 @@ describe('addition of a new blog', () => {
     expect(ids).not.toContain(`${lastBlogAdded.id}`)
 
   })
-
 })
+
+
 
 
 
