@@ -15,7 +15,8 @@ Content-Type: application/json
   "title":"test",
   "author":"test",
   "url":"https://reactpatterns.com/",
-  "likes":7
+  "likes":7,
+  "_id": 212124134
 }
 
 ###
@@ -36,7 +37,7 @@ Content-Type: application/json
 {
   "username":"jeanmich",
   "name":"John Doe",
-  "password":"1s"  
+  "password":"11222222"  
 }
 
 ###
