@@ -16,7 +16,7 @@ Content-Type: application/json
   "author":"test",
   "url":"https://reactpatterns.com/",
   "likes":7,
-  "_id": 212124134
+  "userId": "6599b727f7f8f3891e867766"
 }
 
 ###
