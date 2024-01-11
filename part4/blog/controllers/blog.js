@@ -9,15 +9,10 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-// const getTokenFrom = request => {
-//   const authorization = request.get('authorization')
-//   console.log(authorization)
-//   if (authorization && authorization.startsWith('Bearer ')) {
-//     return authorization.replace('Bearer ', '')
-//   }
-//   return null
-// }
-
+// get token from request object 
+const getTokenFrom = request => {
+  return request.token || null
+}
 
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
