@@ -9,7 +9,7 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-// get token from request object 
+// get token from request object
 const getTokenFrom = request => {
   return request.token || null
 }
@@ -20,7 +20,7 @@ blogsRouter.post('/', async (request, response) => {
   //The validity of the token is checked with jwt.verify.
   //The method also decodes the token, or returns the Object which the token was based on.
   const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-
+  
   //The object decoded from the token contains the username and id fields, which tell the server who made the request.
   //If the object decoded from the token does not contain the user's identity
   //(decodedToken.id is undefined), error status code 401 unauthorized is
@@ -77,14 +77,31 @@ blogsRouter.get('/:id', (request, response, next) => {
 })
 
 
+blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
 
-blogsRouter.delete('/:id', (request, response, next) => {
-  Blog.findByIdAndDelete(request.params.id)
-    .then(() => {
-      response.status(204).end()
-    })
-    .catch(error => next(error))
+    if (!decodedToken || !decodedToken.id) {
+      return response.status(401).json({ error: 'Invalid or missing token' })
+    }
+
+    const blog = await Blog.findById(request.params.id)
+
+    if (!blog) {
+      return response.status(404).json({ error: 'Blog not found' })
+    }
+
+    if (blog.user.toString() !== decodedToken.id.toString()) {
+      return response.status(403).json({ error: 'Unauthorized user' })
+    }
+
+    await Blog.findByIdAndDelete(request.params.id)
+    response.status(204).json({ message: `Blog successfully deleted: ${request.params.id}` }).end();
+  } catch (error) {
+    next(error)
+  }
 })
+
 
 
 blogsRouter.put('/:id', (request, response, next) => {
