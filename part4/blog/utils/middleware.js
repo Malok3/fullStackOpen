@@ -1,4 +1,8 @@
 const logger = require('./logger')
+const jwt = require('jsonwebtoken')
+const User = require('../models/user')
+const { request } = require('express')
+
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -7,12 +11,33 @@ const requestLogger = (request, response, next) => {
   logger.info('---')
   next()
 }
+
 const tokenExtractor = (request,response, next) => {
   const authorization = request.get('authorization')
-  console.log(authorization)
+  console.log('auth',authorization)
   if (authorization && authorization.startsWith('Bearer ')) {
     request.token = authorization.replace('Bearer ', '') // Add the token to the request object
   }
+  next()
+}
+
+const userExtractor = async (request,response, next) => {
+  //The helper function getTokenFrom isolates the token from the authorization header.
+  //The validity of the token is checked with jwt.verify.
+  //The method also decodes the token, or returns the Object which the token was based on.
+  
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  //The object decoded from the token contains the username and id fields, which tell the server who made the request.
+  //If the object decoded from the token does not contain the user's identity
+  //(decodedToken.id is undefined), error status code 401 unauthorized is
+  //returned and the reason for the failure is explained in the response body.
+  if (!decodedToken.id) {
+    response.status(401).json({ error: 'token invalid' })
+  } else {
+    request.user = await User.findById(decodedToken.id)
+  }
+
   next()
 }
 
@@ -38,5 +63,6 @@ module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
-  tokenExtractor
+  tokenExtractor,
+  userExtractor
 }
