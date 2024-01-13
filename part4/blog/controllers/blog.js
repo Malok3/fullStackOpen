@@ -5,12 +5,12 @@ All of the routes related to blogs are now in the blogs.js module under the cont
 */
 
 const blogsRouter = require('express').Router()
-const { request } = require('express');
+//const { request } = require('express');
 const Blog = require('../models/blog')
-const { userExtractor } = require('../utils/middleware');
+
 // const User = require('../models/user')
 //const jwt = require('jsonwebtoken')
-
+const middleware = require('../utils/middleware')
 
 // get token from request object
 // const getTokenFrom = request => {
@@ -18,7 +18,7 @@ const { userExtractor } = require('../utils/middleware');
 // }
 
 
-blogsRouter.post('/', async (request, response) => {
+blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor,async (request, response) => {
   const body = request.body
   //The helper function getTokenFrom isolates the token from the authorization header.
   //The validity of the token is checked with jwt.verify.
@@ -63,9 +63,7 @@ blogsRouter.post('/', async (request, response) => {
 })
 
 
-
-
-blogsRouter.delete('/:id', async (request, response, next) => {
+blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response, next) => {
   try {
     const user = request.user
 
@@ -89,12 +87,12 @@ blogsRouter.delete('/:id', async (request, response, next) => {
 
 blogsRouter.get('/', async (request, response, next) => {
   try {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 });
-    response.json(blogs);
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    response.json(blogs)
   } catch (error) {
-    next(error);
+    next(error)
   }
-});
+})
 
 
 blogsRouter.get('/:id', (request, response, next) => {

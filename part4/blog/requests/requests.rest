@@ -50,9 +50,15 @@ Content-Type: application/json
 }
 
 ###
+GET http://localhost:3003/api/blogs
+Content-Type: application/json
+
+
+
+###
 GET http://localhost:3003/api/users
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NTlhY2NlMzhkMWNmNzNhYWJlYzM4NTEiLCJpYXQiOjE3MDQ3MzI3NjJ9.pN3GLcyev5iEDNIdCvymdBgb-88vrk1CBMVjdayh9Zc
+
 
 ###
 POST http://localhost:3003/api/blogs
@@ -60,13 +66,13 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NTlhY2NlMzhkMWNmNzNhYWJlYzM4NTEiLCJpYXQiOjE3MDQ3MzI3NjJ9.pN3GLcyev5iEDNIdCvymdBgb-88vrk1CBMVjdayh9Zc
 
 {
-  "title":"blog test",
+  "title":"this is a test",
   "author":"author test",
   "url":"http://test.com",
-  "likes":5
+  "likes":15
 }
 
 ###
-DELETE http://localhost:3003/api/blogs/65a1808b9e9cd89895558ae4
+DELETE http://localhost:3003/api/blogs/65a16f6c7739b29b87803b5f
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NTlhY2NlMzhkMWNmNzNhYWJlYzM4NTEiLCJpYXQiOjE3MDQ3MzI3NjJ9.pN3GLcyev5iEDNIdCvymdBgb-88vrk1CBMVjdayh9Zc
