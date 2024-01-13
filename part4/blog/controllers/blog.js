@@ -5,40 +5,15 @@ All of the routes related to blogs are now in the blogs.js module under the cont
 */
 
 const blogsRouter = require('express').Router()
-//const { request } = require('express');
 const Blog = require('../models/blog')
-
-// const User = require('../models/user')
-//const jwt = require('jsonwebtoken')
 const middleware = require('../utils/middleware')
 
-// get token from request object
-// const getTokenFrom = request => {
-//   return request.token || null
-// }
 
-
+// we use middleware specifically on post routes and delete routes
 blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor,async (request, response) => {
   const body = request.body
-  //The helper function getTokenFrom isolates the token from the authorization header.
-  //The validity of the token is checked with jwt.verify.
-  //The method also decodes the token, or returns the Object which the token was based on.
-
-  //const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
-
-  //The object decoded from the token contains the username and id fields, which tell the server who made the request.
-  //If the object decoded from the token does not contain the user's identity
-  //(decodedToken.id is undefined), error status code 401 unauthorized is
-  //returned and the reason for the failure is explained in the response body.
-
-
-  // if (!decodedToken.id) {
-  //   return response.status(401).json({ error: 'token invalid' })
-  // }
-
-  // const user = await User.findById(decodedToken.id)
   const user = request.user
-  console.log('user', user)
+
   if (!body.likes) {
     body.likes = 0
   }

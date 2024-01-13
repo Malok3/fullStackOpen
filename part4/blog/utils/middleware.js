@@ -11,7 +11,6 @@ const requestLogger = (request, response, next) => {
   logger.info('---')
   next()
 }
-
 const tokenExtractor = (request,response, next) => {
   const authorization = request.get('authorization')
   console.log('auth',authorization)
@@ -25,7 +24,6 @@ const userExtractor = async (request,response, next) => {
   //The helper function getTokenFrom isolates the token from the authorization header.
   //The validity of the token is checked with jwt.verify.
   //The method also decodes the token, or returns the Object which the token was based on.
-
   const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
   //The object decoded from the token contains the username and id fields, which tell the server who made the request.
