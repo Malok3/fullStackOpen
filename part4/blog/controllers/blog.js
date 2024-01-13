@@ -82,5 +82,18 @@ blogsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+blogsRouter.put('/api/blogs/:id', (request, response, next) => {
+  const { title, author, url, likes } = request.body
+
+  Blog.findByIdAndUpdate(
+    request.params.id,
+    { title, author, url, likes },
+    { new: true, runValidators: true, context: 'query' }
+  )
+    .then(updatedPerson => {response.json(updatedPerson)})
+    .catch(error => next(error))
+})
+
+
 
 module.exports = blogsRouter

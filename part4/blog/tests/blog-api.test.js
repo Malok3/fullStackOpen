@@ -4,16 +4,24 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
+const User = require('../models/user')
+const bcrypt = require('bcrypt')
 
 
 // Initialise the database: The database is cleared out at the beginning,
 // and after that, we save the two notes stored in the initialNotes array to the database
 beforeEach(async () => {
   await Blog.deleteMany({})
+  
   let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
   blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
+  // const usertest = new User({ username: 'nicotest', password:'1234' })
+  // await usertest.save()
+  // const passwordHash = await bcrypt.hash('sekret', 10)
+  // const usertest1 = new User({ username: 'root', passwordHash })
+  // await usertest1.save()
 })
 
 
@@ -44,13 +52,14 @@ describe('When there is initially some blogs saves', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWEyOTEyOTBmNzI3N2I0MmY4ZjRiMmUiLCJpYXQiOjE3MDUxNTI4MTJ9.fTn7wf6DjpF486cWl87fG_BSWuKnBsZHC8OBnV07uQU')
       .send(newBlog)
-      .expect(200)
+      .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
     const lastBlogAdded = response.body[response.body.length-1]
-
+    console.log(lastBlogAdded)
 
     const blog = {
       title: 'updated title',
@@ -84,8 +93,9 @@ describe('addition of a new blog', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWEyODIzNDMyMGMzMmYwYmRlNWJlMGQiLCJpYXQiOjE3MDUxNDkwNTd9.yvj2YExO6N42fBryduedsmXU9dRsaX0FRNp8khUs5jU')
       .send(newBlog)
-      .expect(200)
+      .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
