@@ -85,12 +85,13 @@ blogsRouter.get('/:id', (request, response, next) => {
 blogsRouter.put('/api/blogs/:id', (request, response, next) => {
   const { title, author, url, likes } = request.body
 
+  console.log('lol',request.params.id)
   Blog.findByIdAndUpdate(
     request.params.id,
     { title, author, url, likes },
     { new: true, runValidators: true, context: 'query' }
   )
-    .then(updatedPerson => {response.json(updatedPerson)})
+    .then(updatedBlog => {response.json(updatedBlog)})
     .catch(error => next(error))
 })
 

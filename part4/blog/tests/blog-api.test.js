@@ -12,7 +12,7 @@ const bcrypt = require('bcrypt')
 // and after that, we save the two notes stored in the initialNotes array to the database
 beforeEach(async () => {
   await Blog.deleteMany({})
-  
+
   let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
   blogObject = new Blog(helper.initialBlogs[1])
@@ -67,7 +67,7 @@ describe('When there is initially some blogs saves', () => {
       url: 'http://www.updatedurl.html',
       likes: 999,
     }
-
+    console.log()
     await api
       .put(`/api/blogs/${lastBlogAdded.id}`)
       .send(blog)
