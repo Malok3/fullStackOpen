@@ -1,7 +1,11 @@
 import React from 'react'
 
 const Country = ({country}) => {
-  console.log(country)
+  const [weather, setWeather] = useState([])
+
+  axios.get('http://api.openweathermap.org/geo/1.0/zip?zip={zip code},{country code}&appid={API key}', {params})
+
+
   //Object.keys(country.languages) is an array 
   return (
     <div>

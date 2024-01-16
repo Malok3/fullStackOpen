@@ -3,6 +3,8 @@ import axios from 'axios';
 import CountryInfo from './components/CountryInfo';
 import Filter from './components/filter';
 
+const api_key = import.meta.env.VITE_SOME_KEY
+
 function App() {
   const [newSearch, setNewSearch] = useState('');
   const [countries, setCountries] = useState([]);
