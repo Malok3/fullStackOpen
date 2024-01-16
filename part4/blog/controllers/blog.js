@@ -9,6 +9,15 @@ const Blog = require('../models/blog')
 const middleware = require('../utils/middleware')
 
 
+blogsRouter.get('/', async (request, response, next) => {
+  try {
+    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+    response.json(blogs)
+  } catch (error) {
+    next(error)
+  }
+})
+
 // we use middleware specifically on post routes and delete routes
 blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor,async (request, response) => {
   const body = request.body
@@ -38,6 +47,22 @@ blogsRouter.post('/', middleware.tokenExtractor, middleware.userExtractor,async 
 })
 
 
+blogsRouter.put('/:id', async (request, response, next) => {
+  try {
+    const { title, author, url, likes } = request.body
+    const updatedBlog = await Blog.findByIdAndUpdate(
+      request.params.id,
+      { title, author, url, likes },
+      { new: true, runValidators: true, context: 'query' }
+    )
+
+    response.json(updatedBlog)
+  } catch (error) {
+    next(error)
+  }
+})
+
+
 blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, async (request, response, next) => {
   try {
     const user = request.user
@@ -60,16 +85,6 @@ blogsRouter.delete('/:id', middleware.tokenExtractor, middleware.userExtractor, 
 })
 
 
-blogsRouter.get('/', async (request, response, next) => {
-  try {
-    const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
-    response.json(blogs)
-  } catch (error) {
-    next(error)
-  }
-})
-
-
 blogsRouter.get('/:id', (request, response, next) => {
   Blog.findById(request.params.id)
     .then(blog => {
@@ -82,18 +97,6 @@ blogsRouter.get('/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-blogsRouter.put('/api/blogs/:id', (request, response, next) => {
-  const { title, author, url, likes } = request.body
-
-  console.log('lol',request.params.id)
-  Blog.findByIdAndUpdate(
-    request.params.id,
-    { title, author, url, likes },
-    { new: true, runValidators: true, context: 'query' }
-  )
-    .then(updatedBlog => {response.json(updatedBlog)})
-    .catch(error => next(error))
-})
 
 
 

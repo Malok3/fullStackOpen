@@ -4,28 +4,21 @@ const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/blog')
 const helper = require('./test_helper')
-const User = require('../models/user')
-const bcrypt = require('bcrypt')
 
 
 // Initialise the database: The database is cleared out at the beginning,
 // and after that, we save the two notes stored in the initialNotes array to the database
 beforeEach(async () => {
   await Blog.deleteMany({})
-
   let blogObject = new Blog(helper.initialBlogs[0])
   await blogObject.save()
   blogObject = new Blog(helper.initialBlogs[1])
   await blogObject.save()
-  // const usertest = new User({ username: 'nicotest', password:'1234' })
-  // await usertest.save()
-  // const passwordHash = await bcrypt.hash('sekret', 10)
-  // const usertest1 = new User({ username: 'root', passwordHash })
-  // await usertest1.save()
 })
 
-
 describe('When there is initially some blogs saves', () => {
+
+
   test('notes are returned as json', async () => {
     await api
       .get('/api/blogs')
@@ -52,14 +45,13 @@ describe('When there is initially some blogs saves', () => {
 
     await api
       .post('/api/blogs')
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWEyOTEyOTBmNzI3N2I0MmY4ZjRiMmUiLCJpYXQiOjE3MDUxNTI4MTJ9.fTn7wf6DjpF486cWl87fG_BSWuKnBsZHC8OBnV07uQU')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
 
     const response = await api.get('/api/blogs')
     const lastBlogAdded = response.body[response.body.length-1]
-    console.log(lastBlogAdded)
 
     const blog = {
       title: 'updated title',
@@ -67,7 +59,6 @@ describe('When there is initially some blogs saves', () => {
       url: 'http://www.updatedurl.html',
       likes: 999,
     }
-    console.log()
     await api
       .put(`/api/blogs/${lastBlogAdded.id}`)
       .send(blog)
@@ -84,6 +75,8 @@ describe('When there is initially some blogs saves', () => {
 describe('addition of a new blog', () => {
   test('a blognote can be added', async () => {
     const initialBlogs = helper.initialBlogs
+
+    console.log(initialBlogs)
     const newBlog = {
       title: 'new blog test',
       author: 'Johnny Knoxville',
@@ -93,7 +86,7 @@ describe('addition of a new blog', () => {
 
     await api
       .post('/api/blogs')
-      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWEyODIzNDMyMGMzMmYwYmRlNWJlMGQiLCJpYXQiOjE3MDUxNDkwNTd9.yvj2YExO6N42fBryduedsmXU9dRsaX0FRNp8khUs5jU')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
@@ -102,7 +95,7 @@ describe('addition of a new blog', () => {
 
     const authors = response.body.map(r => r.author)
 
-    expect(response.body).toHaveLength(initialBlogs.length + 1)
+    expect(response.body).toHaveLength(initialBlogs.length+1)
     expect(authors).toContain(
       'Johnny Knoxville'
     )
@@ -118,8 +111,9 @@ describe('addition of a new blog', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .send(blogWithoutLikes)
-      .expect(200)
+      .expect(201)
 
     const response = await api.get('/api/blogs')
     const lastBlog = response.body[response.body.length-1]
@@ -134,6 +128,7 @@ describe('addition of a new blog', () => {
     }
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .send(blogNoUrl)
       .expect(400)
   })
@@ -148,14 +143,16 @@ describe('addition of a new blog', () => {
 
     await api
       .post('/api/blogs')
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .send(newBlog)
-      .expect(200)
+      .expect(201)
 
     const response = await api.get('/api/blogs')
     const lastBlogAdded = response.body[response.body.length-1]
 
     await api
       .delete(`/api/blogs/${lastBlogAdded.id}`)
+      .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImplYW5taWNoIiwiaWQiOiI2NWE2ODUyYWRkZTljZDg1NDM3Y2M1NDAiLCJpYXQiOjE3MDU0MTE5NTR9.DAowLX7wuWG0EKikrqex51ng9zgLxE7btpWDW49b8lw')
       .expect(204)
 
     const response2 = await api.get('/api/blogs')
