@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
-
-
-
 const apiKey = import.meta.env.VITE_SOME_KEY
 
 const Country = ({ country }) => {
