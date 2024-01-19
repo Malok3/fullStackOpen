@@ -8,7 +8,7 @@ If there are too many (over 10) countries that match the query, then the user is
 
 Improve on the application in the previous exercise, such that when the names of multiple countries are shown on the page there is a button next to the name of the country, which when pressed shows the view for that country
 
-![Alt text](images/19c3.png)
+![Alt text](images/countries-screenshot.png)
 
 ## Run the application 
 
