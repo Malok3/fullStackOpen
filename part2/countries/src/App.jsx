@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import CountryInfo from './components/CountryInfo';
 import Filter from './components/filter';
+import './styles.css';
 
 function App() {
   const [newSearch, setNewSearch] = useState('');

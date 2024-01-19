@@ -3,55 +3,78 @@ import axios from 'axios';
 
 
 
-//const [loading, setLoading] = useState(true);
+
 
 const apiKey = import.meta.env.VITE_SOME_KEY
 
 const Country = ({ country }) => {
-  const selectedCountry = props.country
+  const selectedCountry = country
   const [weather, setWeather] = useState({});
-  //const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-  console.log(country)
   useEffect(() => {
+    setLoading(true);
 
-    const lat = selectedCountry.latlng[0]
-    const lon = selectedCountry.latlng[1]
-   
-    // get coordinates from country's capital
-    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}`)
-    
+    let lat = selectedCountry.latlng[0]
+    let lon = selectedCountry.latlng[1]
+
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+
       .then(weatherResponse => {
         setWeather(weatherResponse.data);
-        console.log(weatherResponse)
+        console.log(weatherResponse.data)
+        setLoading(false);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
+        setLoading(false);
       })
-      
-  }); // Ajout de country.capital comme dépendance pour useEffect
 
-      
+  }, []); //use effect doesn't have any dependency so it will be called only once after the component rendering
+
+
 
   return (
-    <div>
+    <div className='card'>
       <h1>{selectedCountry.name.common}</h1>
-      <img src={selectedCountry.flags.png} alt="Flag" />
-      <p>Capital: {selectedCountry.capital}</p>
-      <p>Population: {selectedCountry.population}</p>
-      <h2>Spoken languages</h2>
+      <img className='flag' src={selectedCountry.flags.png} alt="Flag" />
+      <p><b>Capital:</b> {selectedCountry.capital}</p>
+      <p><b>Population:</b> {selectedCountry.population}</p>
+      <p><b>Spoken languages</b></p>
       <ul>
         {Object.values(selectedCountry.languages).map((language, index) => (
           <li key={index}>{language}</li>
         ))}
       </ul>
-      <h2>Current weather</h2>
-      
-{/*       
-          <p>Temperature: {weather.main.temp} °C</p>
-          <p>Description: {weather.weather[0].description}</p>
-       */}
-      
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        <>
+        <p><b>Current weather:</b></p>
+            <table className='weatherTable'>
+              
+              <tbody>
+                <tr>
+                <td>{weather.weather[0].main}</td>
+                  <td>Temperature</td>
+                  <td>Humidity</td>
+                  
+                </tr>
+                <tr>
+                <td>
+                  <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} alt="Weather Icon" />
+                  </td>
+                  <td>{weather.main.temp} °C</td>
+                  <td>{weather.main.humidity} %</td>
+                 
+                  
+                </tr>
+              </tbody>
+            </table>
+        </>
+      )}
+
     </div>
   );
 };
