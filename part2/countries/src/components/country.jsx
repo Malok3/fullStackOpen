@@ -47,7 +47,7 @@ const Country = ({ country }) => {
         <p>Loading...</p>
       ) : (
         <>
-        <p><b>Current weather:</b></p>
+        <p><b>Current weather in capital city:</b></p>
             <table className='weatherTable'>
               
               <tbody>
