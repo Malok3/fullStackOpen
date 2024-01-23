@@ -11,13 +11,30 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  //const [logged, setLogged] = useState(false)
 
-
+  //empty array as a parameter ensures that the effect is executed only when the 
+  //component is rendered for the first time. 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
   }, [])
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      //noteService.setToken(user.token)
+    }
+  }, [])
+
+  const logout = () => {
+    //setLogged(false)
+    setUser(null)
+    window.localStorage.removeItem('loggedBlogappUser')
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -26,9 +43,13 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+      window.localStorage.setItem(
+        'loggedBlogappUser', JSON.stringify(user)
+      ) 
       setUser(user)
       setUsername('')
       setPassword('')
+      setLogged(true)
     } catch (exception) {
       setErrorMessage('Wrong credentials')
       setTimeout(() => {
@@ -36,8 +57,10 @@ const App = () => {
       }, 5000)
     }
   }
+  
 
   if (user === null) {
+    return (
     <form onSubmit={handleLogin}>
       <div>
         username
@@ -59,10 +82,12 @@ const App = () => {
       </div>
       <button type="submit">login</button>
     </form>
+    )
   }
   return (
     <div>
       <h2>blogs</h2>
+      <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
