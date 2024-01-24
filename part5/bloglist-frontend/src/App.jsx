@@ -11,7 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  //const [logged, setLogged] = useState(false)
 
   //empty array as a parameter ensures that the effect is executed only when the 
   //component is rendered for the first time. 
@@ -31,7 +30,6 @@ const App = () => {
   }, [])
 
   const logout = () => {
-    //setLogged(false)
     setUser(null)
     window.localStorage.removeItem('loggedBlogappUser')
   }
@@ -45,7 +43,8 @@ const App = () => {
       })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
+      noteService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
@@ -57,6 +56,8 @@ const App = () => {
       }, 5000)
     }
   }
+
+  const NewBlog =
   
 
   if (user === null) {
@@ -88,6 +89,20 @@ const App = () => {
     <div>
       <h2>blogs</h2>
       <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
+      <h2>Create new</h2>
+      <div>
+        Title:
+        <input type="text" value="" name="title" />
+      </div>
+      <div>
+        Author:
+        <input type="text" value="" name="author" />
+      </div>
+      <div>
+        Url
+        <input type="text" value="" name="url" />
+      </div>
+      
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
