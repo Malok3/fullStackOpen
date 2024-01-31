@@ -1,13 +1,14 @@
-const Notification = ({ message }) => {
-    if (message === null) {
+
+const Notification = (props) => {
+  if (props.message === null) {
       return null
     }
-  
-    return (
-      <div className="error">
-        {message}
-      </div>
-    )
-  }
-  
-  export default Notification
+  const notificationClass = props.success ? 'notification success' : 'notification error';
+  return (
+  <div className={notificationClass}>
+      {props.message}
+  </div>
+  );
+}
+
+export default Notification

@@ -4,9 +4,11 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import loginService from './services/login'
 
+import './index.css'
 
 const App = () => {
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [notificationMessage, setNotification] = useState(null)
+  const [success, setSuccess] = useState(true)
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -15,6 +17,7 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
+
 
   //empty array as a parameter ensures that the effect is executed only when the 
   //component is rendered for the first time. 
@@ -29,7 +32,6 @@ const App = () => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      //noteService.setToken(user.token)
     }
   }, [])
 
@@ -54,9 +56,12 @@ const App = () => {
       setPassword('')
       setLogged(true)
     } catch (exception) {
-      setErrorMessage('Wrong credentials')
+      
+      setSuccess(false);
+      console.log(exception)
+      setNotification(`Login error: ${exception.code}: `);
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 5000)
     }
   }
@@ -64,22 +69,31 @@ const App = () => {
     event.preventDefault()
 
     try{
+      blogService.setToken(user.token)
       const blogObject = {
         title: title,
         author: author,
         url:url
       }
 
-      console.log(blogObject)
+      // Create new blog
+      const newBlog = await blogService.create(blogObject);
 
-      const newBlog = await blogService.create({
-        blogObject
-      })
+      // Update the state with the updated list of blogs
+      const updatedBlogs = await blogService.getAll();
+      setBlogs(updatedBlogs);
+
+      setSuccess(true);
+      setNotification(`${blogObject.title} by ${blogObject.author}  has been added to blog list.`);
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
     }
     catch (exception){
-      setErrorMessage('Error in creating new blog')
+      setSuccess(false);
+      setNotification('Error in creating new blog');
       setTimeout(() => {
-        setErrorMessage(null)
+        setNotification(null)
       }, 5000)
     }
   }
@@ -87,6 +101,9 @@ const App = () => {
   //when logout
   if (user === null) {
     return (
+      <div>
+        <h2> Login to application</h2>
+      <Notification message={notificationMessage} success={success}/>
       <form onSubmit={handleLogin}>
         <div>
           username
@@ -108,13 +125,15 @@ const App = () => {
         </div>
         <button type="submit">login</button>
       </form>
+      </div>
     )
   }
   return (
     <div>
-      <h2>blogs</h2>
+      
+      <Notification message={notificationMessage} success={success}/>
       <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
-      <h2>Create new</h2>
+      <h2>Create new blog</h2>
       <form onSubmit={createNewBlog}>
         <div>
           Title:
@@ -146,7 +165,7 @@ const App = () => {
         <button type="submit">Create</button>
       </form>
 
-
+      <h2>Blog list</h2>
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
