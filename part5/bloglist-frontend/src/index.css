@@ -12,3 +12,7 @@
     .error {
       color: red;
     }
+
+.setCreateNewBlogVisible {
+  background-color: red;
+}

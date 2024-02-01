@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import Notification from './components/Notification'
 import loginService from './services/login'
+import NewBlogForm from './components/NewBlogForm'
 
 import './index.css'
 
@@ -17,6 +18,9 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
+
+  const [CreateNewBlogVisible, setCreateNewBlogVisible] = useState(false)
+
 
 
   //empty array as a parameter ensures that the effect is executed only when the 
@@ -40,6 +44,7 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
+
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -54,9 +59,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
-      setLogged(true)
     } catch (exception) {
-      
+
       setSuccess(false);
       console.log(exception)
       setNotification(`Login error: ${exception.code}: `);
@@ -65,15 +69,15 @@ const App = () => {
       }, 5000)
     }
   }
-  const createNewBlog = async(event) => {
+  const createNewBlog = async (event) => {
     event.preventDefault()
 
-    try{
+    try {
       blogService.setToken(user.token)
       const blogObject = {
         title: title,
         author: author,
-        url:url
+        url: url
       }
 
       // Create new blog
@@ -89,7 +93,7 @@ const App = () => {
         setNotification(null)
       }, 5000)
     }
-    catch (exception){
+    catch (exception) {
       setSuccess(false);
       setNotification('Error in creating new blog');
       setTimeout(() => {
@@ -103,74 +107,68 @@ const App = () => {
     return (
       <div>
         <h2> Login to application</h2>
-      <Notification message={notificationMessage} success={success}/>
-      <form onSubmit={handleLogin}>
-        <div>
-          username
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          />
-        </div>
-        <div>
-          password
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          />
-        </div>
-        <button type="submit">login</button>
-      </form>
+        <Notification message={notificationMessage} success={success} />
+
+        <form onSubmit={handleLogin}>
+          <div>
+            username
+            <input
+              type="text"
+              value={username}
+              name="Username"
+              onChange={({ target }) => setUsername(target.value)}
+            />
+          </div>
+          <div>
+            password
+            <input
+              type="password"
+              value={password}
+              name="Password"
+              onChange={({ target }) => setPassword(target.value)}
+            />
+          </div>
+          <button type="submit">login</button>
+        </form>
+
       </div>
     )
   }
-  return (
-    <div>
-      
-      <Notification message={notificationMessage} success={success}/>
-      <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
-      <h2>Create new blog</h2>
-      <form onSubmit={createNewBlog}>
-        <div>
-          Title:
-          <input
-            type="text"
-            value={title}
-            name="title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          Author:
-          <input
-            type="text"
-            value={author}
-            name="author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          Url
-          <input
-            type="text"
-            value={url}
-            name="url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-        <button type="submit">Create</button>
-      </form>
+  const createNewBlogForm = () => {
+    const hideWhenVisible = { display: CreateNewBlogVisible ? 'none' : '' }
+    const showWhenVisible = { display: CreateNewBlogVisible ? '' : 'none' }
 
-      <h2>Blog list</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-    </div>
-  )
+    return (
+      <div>
+
+        <Notification message={notificationMessage} success={success} />
+        <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
+
+
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateNewBlogVisible(true)}>Create</button>
+        </div>
+        <div style={showWhenVisible}>
+          <NewBlogForm
+            author={author}
+            title={title}
+            url={url}
+            handleAuthorChange={({ target }) => setAuthor(target.value)}
+            handleTitleChange={({ target }) => setTitle(target.value)}
+            handleUrlChange={({ target }) => setUrl(target.value)}
+            handleSubmit={createNewBlog}
+          />
+          <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
+        </div>
+
+
+        <h2>Blog list</h2>
+        {blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        )}
+      </div>
+    )
+  }
 }
 
 export default App
