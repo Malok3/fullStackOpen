@@ -134,6 +134,7 @@ const App = () => {
       </div>
     )
   }
+
   const createNewBlogForm = () => {
     const hideWhenVisible = { display: CreateNewBlogVisible ? 'none' : '' }
     const showWhenVisible = { display: CreateNewBlogVisible ? '' : 'none' }
@@ -148,6 +149,7 @@ const App = () => {
         <div style={hideWhenVisible}>
           <button onClick={() => setCreateNewBlogVisible(true)}>Create</button>
         </div>
+
         <div style={showWhenVisible}>
           <NewBlogForm
             author={author}
@@ -158,17 +160,28 @@ const App = () => {
             handleUrlChange={({ target }) => setUrl(target.value)}
             handleSubmit={createNewBlog}
           />
-          <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
         </div>
-
-
-        <h2>Blog list</h2>
-        {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
-        )}
       </div>
     )
   }
+  return (
+    <div>
+      <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
+
+
+
+      <h2>Blog list</h2>
+      {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} />
+      )}
+
+
+    </div>
+  )
+
+
+
+
 }
 
 export default App

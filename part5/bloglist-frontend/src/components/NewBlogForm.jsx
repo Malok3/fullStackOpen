@@ -3,7 +3,8 @@ const NewBlogForm = (props) => {
   return (
     <div>
       <h2>Create new blog</h2>
-      <form onSubmit={createNewBlog}>
+      
+<form onSubmit={createNewBlog}>
         <div>
           Title:
           <input
