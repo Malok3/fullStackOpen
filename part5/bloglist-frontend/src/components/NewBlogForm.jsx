@@ -1,17 +1,23 @@
-const NewBlogForm = (props) => {
-
+const NewBlogForm = ({
+  handleSubmit,
+  handleTitleChange,
+  handleAuthorChange,
+  handleUrlChange,
+  author,
+  title,
+  url }) => {
   return (
     <div>
       <h2>Create new blog</h2>
-      
-<form onSubmit={createNewBlog}>
+
+      <form onSubmit={handleSubmit}>
         <div>
           Title:
           <input
             type="text"
             value={title}
             name="title"
-            onChange={({ target }) => setTitle(target.value)}
+            onChange={handleTitleChange}
           />
         </div>
         <div>
@@ -20,7 +26,7 @@ const NewBlogForm = (props) => {
             type="text"
             value={author}
             name="author"
-            onChange={({ target }) => setAuthor(target.value)}
+            onChange={handleAuthorChange}
           />
         </div>
         <div>
@@ -29,7 +35,7 @@ const NewBlogForm = (props) => {
             type="text"
             value={url}
             name="url"
-            onChange={({ target }) => setUrl(target.value)}
+            onChange={handleUrlChange}
           />
         </div>
         <button type="submit">Create</button>

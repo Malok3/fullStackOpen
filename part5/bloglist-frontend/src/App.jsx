@@ -19,7 +19,7 @@ const App = () => {
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
 
-  const [CreateNewBlogVisible, setCreateNewBlogVisible] = useState(false)
+  const [createNewBlogVisible, setCreateNewBlogVisible] = useState(false)
 
 
 
@@ -136,15 +136,16 @@ const App = () => {
   }
 
   const createNewBlogForm = () => {
-    const hideWhenVisible = { display: CreateNewBlogVisible ? 'none' : '' }
-    const showWhenVisible = { display: CreateNewBlogVisible ? '' : 'none' }
+    console.log('wouba')
+    const hideWhenVisible = { display: createNewBlogVisible ? 'none' : '' };
+    const showWhenVisible = { display: createNewBlogVisible ? '' : 'none' };
 
     return (
       <div>
-
         <Notification message={notificationMessage} success={success} />
-        <p>{user.username} logged in <button onClick={logout}>Logout</button></p>
-
+        <p>
+          {user.username} logged in <button onClick={logout}>Logout</button>
+        </p>
 
         <div style={hideWhenVisible}>
           <button onClick={() => setCreateNewBlogVisible(true)}>Create</button>
@@ -160,28 +161,19 @@ const App = () => {
             handleUrlChange={({ target }) => setUrl(target.value)}
             handleSubmit={createNewBlog}
           />
+          <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
+        </div>
+
+        <div>
+          <h2>Blog list</h2>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
         </div>
       </div>
-    )
-  }
-  return (
-    <div>
-      <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
-
-
-
-      <h2>Blog list</h2>
-      {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      )}
-
-
-    </div>
-  )
-
-
-
-
+    );
+  };
+  return createNewBlogForm
 }
 
 export default App
