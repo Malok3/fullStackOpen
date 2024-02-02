@@ -23,8 +23,8 @@ const App = () => {
 
 
 
-  //empty array as a parameter ensures that the effect is executed only when the 
-  //component is rendered for the first time. 
+  // Empty array as a parameter ensures that the effect is executed 
+  // only when the component is rendered for the first time. 
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -136,7 +136,6 @@ const App = () => {
   }
 
   const createNewBlogForm = () => {
-    console.log('wouba')
     const hideWhenVisible = { display: createNewBlogVisible ? 'none' : '' };
     const showWhenVisible = { display: createNewBlogVisible ? '' : 'none' };
 
@@ -164,16 +163,22 @@ const App = () => {
           <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
         </div>
 
-        <div>
-          <h2>Blog list</h2>
-          {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
-          ))}
-        </div>
+
       </div>
     );
   };
-  return createNewBlogForm
+
+  return (
+    <div>
+
+      {createNewBlogForm()}
+      <h2>Blog list</h2>
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} />
+      ))}
+    </div>
+  )
+  
 }
 
 export default App
