@@ -63,7 +63,7 @@ const App = () => {
 
       setSuccess(false);
       console.log(exception)
-      setNotification(`Login error: ${exception.code}: `);
+      setNotification(`Login error: wrong credentials `);
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -134,20 +134,21 @@ const App = () => {
       </div>
     )
   }
-
+  const noteForm = () => (
+    <Togglable buttonLabel="new note">
+      <NoteForm createNote={addNote} />
+    </Togglable>
+    )
+  
   const createNewBlogForm = () => {
     const hideWhenVisible = { display: createNewBlogVisible ? 'none' : '' };
     const showWhenVisible = { display: createNewBlogVisible ? '' : 'none' };
 
     return (
       <div>
-        <Notification message={notificationMessage} success={success} />
-        <p>
-          {user.username} logged in <button onClick={logout}>Logout</button>
-        </p>
-
+        
         <div style={hideWhenVisible}>
-          <button onClick={() => setCreateNewBlogVisible(true)}>Create</button>
+          <button onClick={() => setCreateNewBlogVisible(true)}>New blog</button>
         </div>
 
         <div style={showWhenVisible}>
@@ -170,6 +171,10 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={notificationMessage} success={success} />
+        <p>
+          {user.username} logged in <button onClick={logout}>Logout</button>
+        </p>
 
       {createNewBlogForm()}
       <h2>Blog list</h2>
