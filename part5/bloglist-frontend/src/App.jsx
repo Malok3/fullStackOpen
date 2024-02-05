@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
+
 import Blog from './components/Blog'
+
 import blogService from './services/blogs'
+
 import Notification from './components/Notification'
 import loginService from './services/login'
 import NewBlogForm from './components/NewBlogForm'
+import Togglable from './components/togglable'
 
 import './index.css'
 
@@ -18,9 +22,6 @@ const App = () => {
   const [author, setAuthor] = useState('')
   const [title, setTitle] = useState('')
   const [url, setUrl] = useState('')
-
-  const [createNewBlogVisible, setCreateNewBlogVisible] = useState(false)
-
 
 
   // Empty array as a parameter ensures that the effect is executed 
@@ -69,7 +70,7 @@ const App = () => {
       }, 5000)
     }
   }
-  const createNewBlog = async (event) => {
+  const addBlog = async (event) => {
     event.preventDefault()
 
     try {
@@ -134,56 +135,26 @@ const App = () => {
       </div>
     )
   }
-  const noteForm = () => (
-    <Togglable buttonLabel="new note">
-      <NoteForm createNote={addNote} />
-    </Togglable>
-    )
-  
-  const createNewBlogForm = () => {
-    const hideWhenVisible = { display: createNewBlogVisible ? 'none' : '' };
-    const showWhenVisible = { display: createNewBlogVisible ? '' : 'none' };
-
-    return (
-      <div>
-        
-        <div style={hideWhenVisible}>
-          <button onClick={() => setCreateNewBlogVisible(true)}>New blog</button>
-        </div>
-
-        <div style={showWhenVisible}>
-          <NewBlogForm
-            author={author}
-            title={title}
-            url={url}
-            handleAuthorChange={({ target }) => setAuthor(target.value)}
-            handleTitleChange={({ target }) => setTitle(target.value)}
-            handleUrlChange={({ target }) => setUrl(target.value)}
-            handleSubmit={createNewBlog}
-          />
-          <button onClick={() => setCreateNewBlogVisible(false)}>Cancel</button>
-        </div>
-
-
-      </div>
-    );
-  };
 
   return (
     <div>
       <Notification message={notificationMessage} success={success} />
-        <p>
-          {user.username} logged in <button onClick={logout}>Logout</button>
-        </p>
+      <p>
+        {user.username} logged in <button onClick={logout}>Logout</button>
+      </p>
+    
+      <Togglable buttonLabel="New blog">
+        <NewBlogForm createNote={addBlog} />
+      </Togglable>
+    
 
-      {createNewBlogForm()}
       <h2>Blog list</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
       ))}
     </div>
   )
-  
+
 }
 
 export default App
