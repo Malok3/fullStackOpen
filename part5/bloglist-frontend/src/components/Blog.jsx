@@ -12,7 +12,7 @@ const Blog = ({ blog }) => {
   }
   return (
     <div className="blogStyle">
-    {blog.title} {blog.author} <button onClick={toggleVisibility}>See more</button>
+    {blog.title} {blog.author} <button onClick={toggleVisibility}>{visible ? 'See less' : 'See more'}</button>
     <div style={showWhenVisible}>
       {blog.url} <br />
         Likes: {blog.likes} <button>Like</button> <br />
