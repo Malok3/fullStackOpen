@@ -70,20 +70,14 @@ const App = () => {
       }, 5000)
     }
   }
-  const addBlog = async (event) => {
-    event.preventDefault()
+  const addBlog = async (blogObject) => {
+    //event.preventDefault()
 
     try {
       blogService.setToken(user.token)
-      const blogObject = {
-        title: title,
-        author: author,
-        url: url
-      }
-
+      
       // Create new blog
       const newBlog = await blogService.create(blogObject);
-
       // Update the state with the updated list of blogs
       const updatedBlogs = await blogService.getAll();
       setBlogs(updatedBlogs);
@@ -144,10 +138,9 @@ const App = () => {
       </p>
     
       <Togglable buttonLabel="New blog">
-        <NewBlogForm createNote={addBlog} />
+        <NewBlogForm addBlog={addBlog} />
       </Togglable>
     
-
       <h2>Blog list</h2>
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />

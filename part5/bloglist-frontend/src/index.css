@@ -16,8 +16,7 @@
 }
 
 .blogStyle {
-  padding-top: 10px;
-    padding-left: 2px;
+  padding: 10px 5px;
     border: 1px solid black;
     margin-bottom: 10px;
 }
