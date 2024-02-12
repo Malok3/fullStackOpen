@@ -8,14 +8,19 @@ const Blog = ({ blog, updateBlog, deleteBlog}) => {
   const toggleVisibility = () => {
     setVisible(!visible)
   }
+
   const addLike = () => {
     const updatedBlog = ({
       ...blog,
       likes: blog.likes +1 
     })
-    console.log(updatedBlog)
     updateBlog(blog.id, updatedBlog)
   }
+
+  const removeBlog = () => {
+    deleteBlog(blog.id, blog)
+  }
+
   return (
     <div className="blogStyle">
     {blog.title} {blog.author} <button onClick={toggleVisibility}>{visible ? 'See less' : 'See more'}</button>
@@ -24,7 +29,7 @@ const Blog = ({ blog, updateBlog, deleteBlog}) => {
         Likes: {blog.likes} <button onClick={addLike}>Like</button> <br />
         
         {blog.user && `Added by ${blog.user.name}`}<br />
-        <button onClick={deleteBlog}>Delete blog</button>
+        <button onClick={removeBlog}>Delete blog</button>
     </div>
    </div>  
   )

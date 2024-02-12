@@ -40,7 +40,7 @@ const App = () => {
     }
   }, [])
 
-  
+
   // Login
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -163,6 +163,37 @@ const App = () => {
     }
   }
 
+
+  // Delete a blog 
+
+  const deleteBlog = async (id, blog) => {
+    try {
+      if (window.confirm(`Do you really want to delete ${blog.title} by ${blog.author} ?`)) {
+
+        const del = await blogService.deleteBlog(id)
+        //refresh blog list
+        const updatedBlogs = await blogService.getAll();
+        setBlogs(updatedBlogs);
+
+        setSuccess(true);
+        setNotification(`${blog.title} by ${blog.author}  has been deleted.`);
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)  
+      }
+      
+    }
+    catch (exception) {
+      setSuccess(false);
+      setNotification('Error in deleting blog');
+      console.log(exception)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
+
   return (
     <div>
       <Notification message={notificationMessage} success={success} />
@@ -176,7 +207,7 @@ const App = () => {
     
       <h2>Blog list</h2>
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog}/>
       ))}
     </div>
   )
