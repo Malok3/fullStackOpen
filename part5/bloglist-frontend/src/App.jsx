@@ -19,9 +19,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  const [author, setAuthor] = useState('')
-  const [title, setTitle] = useState('')
-  const [url, setUrl] = useState('')
+  // const [author, setAuthor] = useState('')
+  // const [title, setTitle] = useState('')
+  // const [url, setUrl] = useState('')
 
 
   // Empty array as a parameter ensures that the effect is executed 
@@ -71,11 +71,8 @@ const App = () => {
     }
   }
   const addBlog = async (blogObject) => {
-    //event.preventDefault()
-
     try {
       blogService.setToken(user.token)
-      
       // Create new blog
       const newBlog = await blogService.create(blogObject);
       // Update the state with the updated list of blogs
@@ -96,7 +93,28 @@ const App = () => {
       }, 5000)
     }
   }
+  const updateBlog = async (id, updatedBlog) => {
+    try {
+      const asda = await blogService.update(id, updatedBlog)
+      //refresh blog list
+      const updatedBlogs = await blogService.getAll();
+      setBlogs(updatedBlogs);
 
+      setSuccess(true);
+      setNotification(`${updatedBlog.title} by ${updatedBlog.author}  has been updated.`);
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+    catch (exception) {
+      setSuccess(false);
+      setNotification('Error in updating blog');
+      console.log(exception)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
   //when logout
   if (user === null) {
     return (
@@ -143,7 +161,7 @@ const App = () => {
     
       <h2>Blog list</h2>
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       ))}
     </div>
   )

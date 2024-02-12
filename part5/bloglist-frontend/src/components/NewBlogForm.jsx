@@ -4,7 +4,6 @@ const NewBlogForm = (props) => {
   const [author, setAuthor] = useState('');
   const [title, setTitle] = useState('');
   const [url, setUrl] = useState('');  
-  console.log(author)
 
   const handleSubmit = (event) => {
     event.preventDefault();
