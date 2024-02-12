@@ -40,12 +40,8 @@ const App = () => {
     }
   }, [])
 
-  const logout = () => {
-    setUser(null)
-    window.localStorage.removeItem('loggedBlogappUser')
-  }
-
-
+  
+  // Login
   const handleLogin = async (event) => {
     event.preventDefault()
 
@@ -70,52 +66,16 @@ const App = () => {
       }, 5000)
     }
   }
-  const addBlog = async (blogObject) => {
-    try {
-      blogService.setToken(user.token)
-      // Create new blog
-      const newBlog = await blogService.create(blogObject);
-      // Update the state with the updated list of blogs
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
 
-      setSuccess(true);
-      setNotification(`${blogObject.title} by ${blogObject.author}  has been added to blog list.`);
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-    }
-    catch (exception) {
-      setSuccess(false);
-      setNotification('Error in creating new blog');
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-    }
-  }
-  const updateBlog = async (id, updatedBlog) => {
-    try {
-      const asda = await blogService.update(id, updatedBlog)
-      //refresh blog list
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
 
-      setSuccess(true);
-      setNotification(`${updatedBlog.title} by ${updatedBlog.author}  has been updated.`);
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-    }
-    catch (exception) {
-      setSuccess(false);
-      setNotification('Error in updating blog');
-      console.log(exception)
-      setTimeout(() => {
-        setNotification(null)
-      }, 5000)
-    }
+  //Logout
+  const logout = () => {
+    setUser(null)
+    window.localStorage.removeItem('loggedBlogappUser')
   }
-  //when logout
+
+
+  // If user is logged out display login form
   if (user === null) {
     return (
       <div>
@@ -147,6 +107,61 @@ const App = () => {
       </div>
     )
   }
+  
+
+  // Sort blogs according to their number of likes
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+
+
+  //Create a blog
+  const addBlog = async (blogObject) => {
+    try {
+      blogService.setToken(user.token)
+      // Create new blog
+      const newBlog = await blogService.create(blogObject);
+      // Update the state with the updated list of blogs
+      const updatedBlogs = await blogService.getAll();
+      setBlogs(updatedBlogs);
+
+      setSuccess(true);
+      setNotification(`${blogObject.title} by ${blogObject.author}  has been added to blog list.`);
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+    catch (exception) {
+      setSuccess(false);
+      setNotification('Error in creating new blog');
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
+  
+  // Update blog
+  const updateBlog = async (id, updatedBlog) => {
+    try {
+      const asda = await blogService.update(id, updatedBlog)
+      //refresh blog list
+      const updatedBlogs = await blogService.getAll();
+      setBlogs(updatedBlogs);
+
+      setSuccess(true);
+      setNotification(`${updatedBlog.title} by ${updatedBlog.author}  has been updated.`);
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+    catch (exception) {
+      setSuccess(false);
+      setNotification('Error in updating blog');
+      console.log(exception)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
 
   return (
     <div>
@@ -160,7 +175,7 @@ const App = () => {
       </Togglable>
     
       <h2>Blog list</h2>
-      {blogs.map((blog) => (
+      {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
       ))}
     </div>
