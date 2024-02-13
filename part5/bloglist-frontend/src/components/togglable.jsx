@@ -24,3 +24,15 @@ const Togglable = (props) => {
 }
 
 export default Togglable
+
+
+
+import PropTypes from 'prop-types'
+
+const Togglable = React.forwardRef((props, ref) => {
+  // ..
+})
+
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
