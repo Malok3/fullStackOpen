@@ -169,7 +169,7 @@ const App = () => {
   const deleteBlog = async (id, blog) => {
     try {
       if (window.confirm(`Do you really want to delete ${blog.title} by ${blog.author} ?`)) {
-
+        blogService.setToken(user.token)
         const del = await blogService.deleteBlog(id)
         //refresh blog list
         const updatedBlogs = await blogService.getAll();
