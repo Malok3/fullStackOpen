@@ -19,13 +19,9 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
-  // const [author, setAuthor] = useState('')
-  // const [title, setTitle] = useState('')
-  // const [url, setUrl] = useState('')
 
-
-  // Empty array as a parameter ensures that the effect is executed 
-  // only when the component is rendered for the first time. 
+  // Empty array as a parameter ensures that the effect is executed
+  // only when the component is rendered for the first time.
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
@@ -58,9 +54,9 @@ const App = () => {
       setPassword('')
     } catch (exception) {
 
-      setSuccess(false);
+      setSuccess(false)
       console.log(exception)
-      setNotification(`Login error: wrong credentials `);
+      setNotification('Login error: wrong credentials ')
       setTimeout(() => {
         setNotification(null)
       }, 5000)
@@ -107,10 +103,10 @@ const App = () => {
       </div>
     )
   }
-  
+
 
   // Sort blogs according to their number of likes
-  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes);
+  const sortedBlogs = [...blogs].sort((a, b) => b.likes - a.likes)
 
 
   //Create a blog
@@ -118,44 +114,44 @@ const App = () => {
     try {
       blogService.setToken(user.token)
       // Create new blog
-      const newBlog = await blogService.create(blogObject);
+      const newBlog = await blogService.create(blogObject)
       // Update the state with the updated list of blogs
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
 
-      setSuccess(true);
-      setNotification(`${blogObject.title} by ${blogObject.author}  has been added to blog list.`);
+      setSuccess(true)
+      setNotification(`${blogObject.title} by ${blogObject.author}  has been added to blog list.`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     }
     catch (exception) {
-      setSuccess(false);
-      setNotification('Error in creating new blog');
+      setSuccess(false)
+      setNotification('Error in creating new blog')
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     }
   }
 
-  
+
   // Update blog
   const updateBlog = async (id, updatedBlog) => {
     try {
-      const asda = await blogService.update(id, updatedBlog)
+      const updt = await blogService.update(id, updatedBlog)
       //refresh blog list
-      const updatedBlogs = await blogService.getAll();
-      setBlogs(updatedBlogs);
+      const updatedBlogs = await blogService.getAll()
+      setBlogs(updatedBlogs)
 
-      setSuccess(true);
-      setNotification(`${updatedBlog.title} by ${updatedBlog.author}  has been updated.`);
+      setSuccess(true)
+      setNotification(`${updatedBlog.title} by ${updatedBlog.author}  has been updated.`)
       setTimeout(() => {
         setNotification(null)
       }, 5000)
     }
     catch (exception) {
-      setSuccess(false);
-      setNotification('Error in updating blog');
+      setSuccess(false)
+      setNotification('Error in updating blog')
       console.log(exception)
       setTimeout(() => {
         setNotification(null)
@@ -164,7 +160,7 @@ const App = () => {
   }
 
 
-  // Delete a blog 
+  // Delete a blog
 
   const deleteBlog = async (id, blog) => {
     try {
@@ -172,20 +168,20 @@ const App = () => {
         blogService.setToken(user.token)
         const del = await blogService.deleteBlog(id)
         //refresh blog list
-        const updatedBlogs = await blogService.getAll();
-        setBlogs(updatedBlogs);
+        const updatedBlogs = await blogService.getAll()
+        setBlogs(updatedBlogs)
 
-        setSuccess(true);
-        setNotification(`${blog.title} by ${blog.author}  has been deleted.`);
+        setSuccess(true)
+        setNotification(`${blog.title} by ${blog.author}  has been deleted.`)
         setTimeout(() => {
           setNotification(null)
-        }, 5000)  
+        }, 5000)
       }
-      
+
     }
     catch (exception) {
-      setSuccess(false);
-      setNotification('Error in deleting blog');
+      setSuccess(false)
+      setNotification('Error in deleting blog')
       console.log(exception)
       setTimeout(() => {
         setNotification(null)
@@ -200,11 +196,11 @@ const App = () => {
       <p>
         {user.username} logged in <button onClick={logout}>Logout</button>
       </p>
-    
-      <Togglable buttonLabel="New blog">
+
+      <Togglable buttonLabel="Create a new Blog">
         <NewBlogForm addBlog={addBlog} />
       </Togglable>
-    
+
       <h2>Blog list</h2>
       {sortedBlogs.map((blog) => (
         <Blog key={blog.id} blog={blog} updateBlog={updateBlog} deleteBlog={deleteBlog}/>

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';  
+import React, { useState } from 'react'
 
 const NewBlogForm = (props) => {
-  const [author, setAuthor] = useState('');
-  const [title, setTitle] = useState('');
-  const [url, setUrl] = useState('');  
+  const [author, setAuthor] = useState('')
+  const [title, setTitle] = useState('')
+  const [url, setUrl] = useState('')
 
   const handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     // Call the addBlog function passed as a prop with the form data
-    props.addBlog({ author, title, url });
+    props.addBlog({ author, title, url })
     // Clear the form fields after submission
-    setAuthor('');
-    setTitle('');
-    setUrl('');
-  };
+    setAuthor('')
+    setTitle('')
+    setUrl('')
+  }
 
   return (
     <div>
@@ -27,7 +27,7 @@ const NewBlogForm = (props) => {
             value={title}
             name="title"
             onChange={(event) => setTitle(event.target.value)}
-            
+
           />
         </div>
         <div>
