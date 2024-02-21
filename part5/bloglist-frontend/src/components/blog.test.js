@@ -4,6 +4,8 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import Togglable from './Togglable'
+import NewBlogForm from './NewBlogForm'
+
 
 describe('Blog component', () => {
 
@@ -72,3 +74,28 @@ describe('Togglable components', () => {
   })
 })
 
+describe('New blog form', () => {
+  test('The form calls the event handler it received as props with the right details when a new blog is created', async () => {
+    const createBlog = jest.fn()
+    const user = userEvent.setup()
+
+    const { container } = render(<NewBlogForm addBlog={createBlog}/>)
+
+    const blogTitle = container.querySelector('#blog-title')
+    const blogAuthor = container.querySelector('#blog-author')
+    const blogUrl = container.querySelector('#blog-url')
+    const submitBtn = container.querySelector('#blog-submit')
+
+    await user.type(blogTitle, 'Saturday Night')
+    await user.type(blogAuthor, 'Oliver Chattam')
+    await user.type(blogUrl, 'http://www.test.com')
+    await user.click(submitBtn)
+
+    expect(createBlog.mock.calls).toHaveLength(1)
+    expect(createBlog.mock.calls[0][0].title).toBe('Saturday Night')
+    expect(createBlog.mock.calls[0][0].author).toBe('Oliver Chattam')
+    expect(createBlog.mock.calls[0][0].url).toBe('http://www.test.com')
+
+  })
+
+})
