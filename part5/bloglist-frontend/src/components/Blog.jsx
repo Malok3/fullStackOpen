@@ -28,7 +28,7 @@ const Blog = ({ blog, updateBlog, deleteBlog }) => {
         {blog.url} <br />
         Likes: <span id="likes-number">{blog.likes}</span> <button onClick={addLike} id="like-button">Like</button> <br />
         {blog.user && `Added by ${blog.user.name}`}<br />
-        <button onClick={removeBlog}>Delete blog</button>
+        <button onClick={removeBlog} id="delete-button">Delete blog</button>
       </div>
     </div>
   )
