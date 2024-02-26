@@ -1,5 +1,4 @@
 
-
 describe('Blog app', function() {
   beforeEach(function() {
     cy.request('POST', 'http://localhost:5173/api/testing/reset')
@@ -39,11 +38,7 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.contains('login').click()
-      cy.get('#username').type('testing_user')
-      cy.get('#password').type('123456')
-      cy.get('#login-button').click()
-      cy.contains('Nicolas logged in')
+      cy.login({ username: 'testing_user', password: '123456' })
     })
 
     it('A blog can be created', function() {
@@ -53,6 +48,19 @@ describe('Blog app', function() {
       cy.get('#blog-url').type('http://www.test.fi')
       cy.get('#blog-submit').click()
       cy.contains('Arthur Rimbaud')
+    })
+
+    it('A blog can be liked', function(){
+      cy.createBlog({
+        title: 'another blog cypress',
+        author: 'tester',
+        url: 'testing',
+        likes: 0
+      })
+      cy.get('#seemore-button').click()
+      cy.contains('0')
+      cy.get('#like-button').click()
+      cy.contains('1')
     })
   })
 
