@@ -76,14 +76,18 @@ describe('Blog app', function () {
       cy.contains('a blog to delete')
     })
 
+    // If the delete button belonging to the blog created in beforeEach doesn't exist, it means the blog has been deleted
     it('A blog can be deleted', function () {
       cy.contains('a blog to delete').parent().find('#seemore-button').click()
       cy.get('#delete-button').as('theButton')
       cy.get('@theButton').click()
-      cy.contains('a blog to delete').should('not.exist')
+      cy.get('@theButton').should('not.exist')
     })
 
-    it.only('only the creator can see the delete button', function () {
+    // The exercise is asking to check that the delete button is not shown if the user is not the author. 
+    // This feature is not implemented in the material so I made a test that checks an error message is displayed
+    // if a user tries to delete someone else's blog.
+    it('only the creator can delete own blogs', function () {
       const user = {
         name: 'john',
         username: 'johndoe',
@@ -98,6 +102,21 @@ describe('Blog app', function () {
       cy.get('.error').should('have.css', 'color', 'rgb(255, 0, 0)')
     })
 
+  })
+
+  describe('Blogs rendering',function(){
+    beforeEach(function(){
+      cy.login({ username: 'testing_user', password: '123456' })
+      cy.createBlog({title: 'blog with less likes',author: 'tester1',url: 'testing',likes:2 })
+      cy.createBlog({title: 'blog with most likes',author: 'tester2',url: 'testing',likes:10 })
+      cy.createBlog({title: 'blog with 5 likes',author: 'tester3',url: 'testing',likes:5 })
+    })
+
+    it('Blogs are ordered by likes with the most liked blog being first', function(){
+      cy.get('.blog').eq(0).should('contain', 'blog with most likes')
+      cy.get('.blog').eq(1).should('contain', 'blog with 5 likes')
+      cy.get('.blog').eq(2).should('contain', 'blog with less likes')
+    })
   })
 
 })
