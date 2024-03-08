@@ -23,6 +23,8 @@ const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch (action.type) {
+    case 'NEW_ANECDOTE':
+      return [...state, action.payload]
     case 'VOTE': {
       const anecdoteId = action.data.id;
       const updatedAnecdotes = state.map(anecdote => //crawl through each anecdotes in state then find the coresponding id then add +1 vote
@@ -35,4 +37,16 @@ const reducer = (state = initialState, action) => {
   }
 }
 
-export default reducer
+
+const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    payload: {
+      content,
+      id: getId()
+    }
+  }
+}
+
+
+export { reducer, createAnecdote };

@@ -20,13 +20,12 @@ const App = () => {
   const [user, setUser] = useState(null)
 
 
-  // Empty array as a parameter ensures that the effect is executed
-  // only when the component is rendered for the first time.
+  
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
-  }, [])
+  }, [])// Empty array [] as a parameter ensures that the effect is executed only when the component is rendered for the first time.
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
