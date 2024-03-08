@@ -1,11 +1,19 @@
 import { useSelector, useDispatch } from 'react-redux'
 
-const App = () => {
-  const anecdotes = useSelector(state => state)
-  const dispatch = useDispatch()
+import { createStore } from 'redux'
+import reducer from './reducers/anecdoteReducer'
 
-  const vote = (id) => {
-    console.log('vote', id)
+const store = createStore(reducer) //creates redux store with reducer as argument. App state will be saved in store
+
+const App = () => {
+  const anecdotes = useSelector(state => state) //use selector will extract state from store. Here all anecdotes are extracted
+  const dispatch = useDispatch() // useDipatch sends actions to store
+
+  const vote = (id) => { // this function will send an action to reducer with dispatch.
+    dispatch({
+      type: 'VOTE',
+      data:{id} // include the ID of the anecdote
+    }) 
   }
 
   return (

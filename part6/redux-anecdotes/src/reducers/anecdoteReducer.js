@@ -9,7 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
+const asObject = (anecdote) => { // transform anecdote into object
   return {
     content: anecdote,
     id: getId(),
@@ -17,13 +17,22 @@ const asObject = (anecdote) => {
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = anecdotesAtStart.map(asObject) // creates a table of anecdotes as object and cotes at 0
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action) => { 
   console.log('state now: ', state)
   console.log('action', action)
-
-  return state
+  switch (action.type) {
+    case 'VOTE': {
+      const anecdoteId = action.data.id;
+      const updatedAnecdotes = state.map(anecdote => //crawl through each anecdotes in state then find the coresponding id then add +1 vote
+        anecdote.id === anecdoteId ? { ...anecdote, votes: anecdote.votes + 1 } : anecdote
+      );
+      return updatedAnecdotes;
+    }
+    default:
+      return state;
+  }
 }
 
 export default reducer
