@@ -17,17 +17,39 @@ const asObject = (anecdote) => { // transform anecdote into object
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject) // creates a table of anecdotes as object and cotes at 0
+const initialState = anecdotesAtStart.map(asObject) // creates a table of anecdotes as object and votes at 0
 
-const reducer = (state = initialState, action) => { 
-  console.log('state now: ', state)
-  console.log('action', action)
+// action creators, different actions are separated for a clearer and more modulable code
+const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    payload: {
+      content,
+      votes: 0,
+      id: getId()
+    }
+  };
+};
+
+const voteAnecdote = (id) => {
+  return {
+    type: 'VOTE',
+    payload: {
+      id
+    }
+  };
+};
+
+// reducer, A pure fonction (doesn't modify current state but will return an object based on current state and action) takes 2 parameters (current state and action)
+const reducer = (state = initialState, action) => {
+  console.log('state now: ', state);
+  console.log('action:', action);
   switch (action.type) {
     case 'NEW_ANECDOTE':
-      return [...state, action.payload]
+      return [...state, action.payload];
     case 'VOTE': {
-      const anecdoteId = action.data.id;
-      const updatedAnecdotes = state.map(anecdote => //crawl through each anecdotes in state then find the coresponding id then add +1 vote
+      const anecdoteId = action.payload.id;
+      const updatedAnecdotes = state.map((anecdote) => //crawl through each anecdotes in state then find the coresponding id then add +1 vote
         anecdote.id === anecdoteId ? { ...anecdote, votes: anecdote.votes + 1 } : anecdote
       );
       return updatedAnecdotes;
@@ -35,19 +57,6 @@ const reducer = (state = initialState, action) => {
     default:
       return state;
   }
-}
+};
 
-
-const createAnecdote = (content) => {
-  return {
-    type: 'NEW_ANECDOTE',
-    payload: {
-      content,
-      votes:0,
-      id: getId()
-    }
-  }
-}
-
-
-export { reducer, createAnecdote };
+export { reducer, createAnecdote, voteAnecdote };
