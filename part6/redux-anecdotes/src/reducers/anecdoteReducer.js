@@ -40,7 +40,7 @@ const voteAnecdote = (id) => {
   };
 };
 
-// reducer, A pure fonction (doesn't modify current state but will return an object based on current state and action) takes 2 parameters (current state and action)
+// Reducer, A pure fonction (doesn't modify current state but will return an object based on current state and action) takes 2 parameters (current state and action)
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state);
   console.log('action:', action);
