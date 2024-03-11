@@ -43,6 +43,7 @@ const createAnecdote = (content) => {
     type: 'NEW_ANECDOTE',
     payload: {
       content,
+      votes:0,
       id: getId()
     }
   }
