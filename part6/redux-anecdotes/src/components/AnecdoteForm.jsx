@@ -21,5 +21,5 @@ const AnecdoteForm = () => {
         </div>
     )
 }
-export { AnecdoteForm };
+export default AnecdoteForm;
 

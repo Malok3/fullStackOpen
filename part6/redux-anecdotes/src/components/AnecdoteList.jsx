@@ -2,7 +2,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-
     const anecdotes = useSelector(state => state) //use selector will extract state from store. Here all anecdotes are extracted
     const dispatch = useDispatch() // useDipatch sends actions to store
    
@@ -27,9 +26,7 @@ const AnecdoteList = () => {
             )
         }
         </div>
-        
     )
-
 }
 
 
