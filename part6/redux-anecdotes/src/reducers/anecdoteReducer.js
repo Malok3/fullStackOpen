@@ -41,9 +41,9 @@ const voteAnecdote = (id) => {
 };
 
 // Reducer, A pure fonction (doesn't modify current state but will return an object based on current state and action) takes 2 parameters (current state and action)
-const reducer = (state = initialState, action) => {
-  console.log('state now: ', state);
-  console.log('action:', action);
+const anecdoteReducer = (state = initialState, action) => {
+  //console.log('state now: ', state);
+  //console.log('action:', action);
   switch (action.type) {
     case 'NEW_ANECDOTE':
       return [...state, action.payload];
@@ -59,4 +59,4 @@ const reducer = (state = initialState, action) => {
   }
 };
 
-export { reducer, createAnecdote, voteAnecdote };
+export { anecdoteReducer, createAnecdote, voteAnecdote };
