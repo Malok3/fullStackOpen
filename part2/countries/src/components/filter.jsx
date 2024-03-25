@@ -7,10 +7,6 @@ const Filter = (props) => {
         Find countries <input value={search} onChange={handleSearchChange} />
         </div>
     )
-        
-        
-    
-    
 }
 
 export default Filter
