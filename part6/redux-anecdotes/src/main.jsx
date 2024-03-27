@@ -4,9 +4,10 @@ import { Provider } from 'react-redux'
 import App from './App'
 //import { anecdoteReducer } from './reducers/anecdoteReducer'
 //import {anecdoteReducer} from './reducers/anecdoteReducer'
-import anecdoteReducer, { createAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
-
+//import anecdoteReducer, { createAnecdote, voteAnecdote } from './reducers/anecdoteReducer'
+import anecdoteReducer from './reducers/anecdoteReducer'
 import {filterReducer} from './reducers/filterReducer'
+
 
 const store = configureStore({ //creates redux store with reducer as argument. App state will be saved in store
   reducer: {
