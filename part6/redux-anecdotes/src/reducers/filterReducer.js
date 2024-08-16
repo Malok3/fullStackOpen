@@ -1,27 +1,20 @@
-// import { createSlice } from '@reduxjs/toolkit'
 
+import { createSlice } from '@reduxjs/toolkit';
 
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState: null, // Initial state set to null, similar to your original code
+  reducers: {
+    setFilter(state, action) {
+      return action.payload;
+    },
+  },
+});
 
-// const filterSlice = createSlice({
-//   name: 'filter',
-//   reducers: {
-//     filter(state = null, action) {
-//       const content = action.payload
-//       state.push({
-//         content,
-//         vote: 0,
-//         id: getId(),
-//       })
-//     },
-//     filterChange(state, action) {
-//       const id = action.payload
-      
-//        return updatedAnecdotes;
-//     }
-//   },
-// })
+export const { setFilter } = filterSlice.actions;
+export default filterSlice.reducer;
 
-
+/*
 const filterReducer = (state = null, action) => {
     switch (action.type) {
       case 'SET_FILTER':
@@ -39,4 +32,4 @@ const filterReducer = (state = null, action) => {
   }
   
   
-  export { filterReducer, filterChange };
+  export { filterReducer, filterChange };*/
