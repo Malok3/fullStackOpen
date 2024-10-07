@@ -22,9 +22,9 @@ The course also contains a section on GraphQL, a modern alternative to REST APIs
 
 ### [Part 5 - Testing React apps](./part5)
 
-<!-- ### [Part 6 - State management with Redux](./part6)
+### [Part 6 - State management with Redux](./part6)
 
-### [Part 7 - React router, custom hooks, styling app with CSS and webpack](./part7)
+<!--### [Part 7 - React router, custom hooks, styling app with CSS and webpack](./part7)
 
 ### [Part 8 - GraphQL](./part8)
 
